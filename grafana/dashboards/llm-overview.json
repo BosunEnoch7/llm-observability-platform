@@ -1,0 +1,49 @@
+﻿{
+  "annotations": {"list": []},
+  "editable": true,
+  "graphTooltip": 1,
+  "panels": [
+    {
+      "type": "stat", "title": "Request rate", "id": 1,
+      "gridPos": {"h": 6, "w": 6, "x": 0, "y": 0},
+      "targets": [{"expr": "sum(rate(llm_http_requests_total{route=\"/v1/generate\"}[5m]))", "legendFormat": "requests/s"}]
+    },
+    {
+      "type": "stat", "title": "Success rate", "id": 2,
+      "gridPos": {"h": 6, "w": 6, "x": 6, "y": 0},
+      "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0, "max": 1}},
+      "targets": [{"expr": "sum(rate(llm_http_requests_total{route=\"/v1/generate\",status_code=~\"2..\"}[5m])) / clamp_min(sum(rate(llm_http_requests_total{route=\"/v1/generate\"}[5m])), 0.001)", "legendFormat": "success"}]
+    },
+    {
+      "type": "stat", "title": "P95 inference latency", "id": 3,
+      "gridPos": {"h": 6, "w": 6, "x": 12, "y": 0},
+      "fieldConfig": {"defaults": {"unit": "s"}},
+      "targets": [{"expr": "histogram_quantile(0.95, sum by (le) (rate(llm_inference_duration_seconds_bucket[5m])))", "legendFormat": "p95"}]
+    },
+    {
+      "type": "stat", "title": "Estimated cost", "id": 4,
+      "gridPos": {"h": 6, "w": 6, "x": 18, "y": 0},
+      "fieldConfig": {"defaults": {"unit": "currencyUSD"}},
+      "targets": [{"expr": "sum(llm_estimated_cost_usd_total)", "legendFormat": "USD"}]
+    },
+    {
+      "type": "timeseries", "title": "Requests by status", "id": 5,
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 6},
+      "targets": [{"expr": "sum by (status_code) (rate(llm_http_requests_total{route=\"/v1/generate\"}[5m]))", "legendFormat": "HTTP {{status_code}}"}]
+    },
+    {
+      "type": "timeseries", "title": "Token usage", "id": 6,
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 6},
+      "targets": [{"expr": "sum by (model, direction) (rate(llm_tokens_total[5m]))", "legendFormat": "{{model}} {{direction}}"}]
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": ["llm", "observability", "prometheus"],
+  "templating": {"list": []},
+  "time": {"from": "now-1h", "to": "now"},
+  "timezone": "browser",
+  "title": "LLM Service Overview",
+  "uid": "llm-service-overview",
+  "version": 1
+}

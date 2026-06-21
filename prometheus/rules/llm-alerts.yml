@@ -1,0 +1,36 @@
+﻿groups:
+  - name: llm-service
+    rules:
+      - alert: LLMServiceDown
+        expr: up{job="llm-service"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: LLM service is unavailable
+          description: Prometheus has failed to scrape the LLM service for one minute.
+
+      - alert: LLMHighErrorRate
+        expr: |
+          sum(rate(llm_http_requests_total{route="/v1/generate",status_code=~"5.."}[5m]))
+          /
+          clamp_min(sum(rate(llm_http_requests_total{route="/v1/generate"}[5m])), 0.001)
+          > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: LLM API error rate exceeds 5%
+          description: More than 5% of generation requests have failed for five minutes.
+
+      - alert: LLMHighP95Latency
+        expr: |
+          histogram_quantile(0.95,
+            sum by (le) (rate(llm_inference_duration_seconds_bucket[5m]))
+          ) > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: LLM inference p95 latency exceeds five seconds
+          description: The p95 inference duration has remained above five seconds.
