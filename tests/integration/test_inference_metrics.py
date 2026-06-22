@@ -12,9 +12,13 @@ def test_generation_is_reflected_in_metrics() -> None:
         metrics = client.get("/metrics").text
 
     assert response.status_code == 200
+    assert response.json()["inference_id"]
+    assert response.json()["prompt_version"] == "v1"
     assert response.json()["provider"] == "simulated"
     assert response.json()["usage"]["total_tokens"] > 0
     assert "llm_inference_requests_total" in metrics
     assert "llm_tokens_total" in metrics
     assert "llm_estimated_cost_usd_total" in metrics
     assert "llm_provider_attempts_total" in metrics
+    assert "llm_prompt_version_requests_total" in metrics
+    assert "llm_safety_evaluations_total" in metrics

@@ -1,0 +1,29 @@
+groups:
+  - name: llm-quality-and-safety
+    rules:
+      - alert: LLMSafetyEventSpike
+        expr: sum(rate(llm_safety_events_total[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: LLM safety events are elevated
+          description: Safety findings have exceeded 0.1 events per second for five minutes.
+          runbook_url: /docs/runbooks/safety-event-spike.md
+
+      - alert: LLMNegativeFeedbackHigh
+        expr: |
+          (
+            sum(increase(llm_feedback_total{sentiment="negative"}[15m]))
+            /
+            clamp_min(sum(increase(llm_feedback_total[15m])), 1)
+          ) > 0.30
+          and
+          sum(increase(llm_feedback_total[15m])) >= 10
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Negative LLM feedback exceeds 30%
+          description: At least ten feedback events were received and more than 30% were negative.
+          runbook_url: /docs/runbooks/negative-feedback.md

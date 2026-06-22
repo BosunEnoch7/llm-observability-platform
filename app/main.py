@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from prometheus_client import make_asgi_app
 
 from app.api.health import router as health_router
+from app.api.feedback import router as feedback_router
 from app.api.inference import router as inference_router
 from app.core.config import settings
 from app.core.logging import configure_logging
@@ -35,6 +36,7 @@ def create_app() -> FastAPI:
     application.add_middleware(RequestContextMiddleware)
     application.include_router(health_router)
     application.include_router(inference_router)
+    application.include_router(feedback_router)
     application.mount("/metrics", make_asgi_app())
     application.state.tracer_provider = configure_tracing(application, settings)
     return application

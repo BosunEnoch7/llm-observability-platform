@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from uuid import UUID
 
 
 class GenerateRequest(BaseModel):
@@ -14,6 +15,8 @@ class Usage(BaseModel):
 
 
 class GenerateResponse(BaseModel):
+    inference_id: UUID
+    prompt_version: str
     provider: str
     model: str
     text: str

@@ -19,6 +19,11 @@ provider spans. OTLP export targets Jaeger locally and can be redirected to an
 Azure-compatible telemetry pipeline later. Trace context is added to JSON logs,
 but prompts and responses are excluded from span attributes.
 
+AI-specific telemetry remains split by purpose. Prometheus stores aggregate,
+bounded operational metrics for prompt versions, feedback, and safety events.
+Inference IDs and any future detailed evaluation records belong in a durable,
+access-controlled analytics system rather than metric labels or ordinary logs.
+
 ## Metric-label policy
 
 Labels are restricted to bounded dimensions such as route, HTTP status, model,

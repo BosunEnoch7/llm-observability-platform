@@ -59,3 +59,34 @@ SERVICE_INFO = Info(
     "llm_service",
     "Static service build and environment information.",
 )
+
+PROMPT_VERSION_REQUESTS = Counter(
+    "llm_prompt_version_requests_total",
+    "Inference requests by operator-controlled prompt version.",
+    ("model", "prompt_version"),
+)
+
+SAFETY_EVALUATIONS = Counter(
+    "llm_safety_evaluations_total",
+    "Total local safety evaluations.",
+    ("stage", "outcome"),
+)
+
+SAFETY_EVENTS = Counter(
+    "llm_safety_events_total",
+    "Categorized safety findings and actions.",
+    ("stage", "category", "action"),
+)
+
+QUALITY_RATING = Histogram(
+    "llm_quality_rating",
+    "User-submitted response quality rating from one to five.",
+    ("category",),
+    buckets=(1, 2, 3, 4, 5),
+)
+
+FEEDBACK = Counter(
+    "llm_feedback_total",
+    "Aggregate user feedback by sentiment and category.",
+    ("sentiment", "category"),
+)

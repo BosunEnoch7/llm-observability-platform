@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time
+from uuid import uuid4
 
 from fastapi import HTTPException
 
@@ -11,25 +12,45 @@ from app.observability.metrics import (
     INFERENCE_REQUESTS,
     PROVIDER_ATTEMPTS,
     PROVIDER_RETRIES,
+    PROMPT_VERSION_REQUESTS,
+    SAFETY_EVALUATIONS,
+    SAFETY_EVENTS,
     TOKENS,
 )
 from app.observability.tracing import provider_span
 from app.providers import LLMProvider, ProviderError, build_provider
 from app.schemas.inference import GenerateRequest, GenerateResponse, Usage
+from app.services.safety_service import SafetyEvaluator
 
 logger = logging.getLogger(__name__)
 
 
 class LLMService:
-    def __init__(self, settings: Settings, provider: LLMProvider | None = None):
+    def __init__(
+        self,
+        settings: Settings,
+        provider: LLMProvider | None = None,
+        safety_evaluator: SafetyEvaluator | None = None,
+    ):
         self.settings = settings
         self.provider = provider or build_provider(settings)
+        self.safety_evaluator = safety_evaluator or SafetyEvaluator()
 
     async def generate(self, request: GenerateRequest) -> GenerateResponse:
         model = request.model or self.settings.default_model
         started = time.perf_counter()
         outcome = "error"
+        PROMPT_VERSION_REQUESTS.labels(
+            model=model,
+            prompt_version=self.settings.prompt_version,
+        ).inc()
         try:
+            if self._evaluate_safety(request.prompt, "input"):
+                outcome = "blocked"
+                raise HTTPException(
+                    status_code=422, detail="Input blocked by safety policy"
+                )
+
             result = await self._generate_with_retry(request, model)
             cost = (
                 result.prompt_tokens * self.settings.input_price_per_million_tokens
@@ -40,6 +61,13 @@ class LLMService:
             TOKENS.labels(model=model, direction="input").inc(result.prompt_tokens)
             TOKENS.labels(model=model, direction="output").inc(result.completion_tokens)
             ESTIMATED_COST.labels(model=model).inc(cost)
+
+            if self._evaluate_safety(result.text, "output"):
+                outcome = "blocked"
+                raise HTTPException(
+                    status_code=422,
+                    detail="Output blocked by safety policy",
+                )
             outcome = "success"
 
             usage = Usage(
@@ -48,6 +76,8 @@ class LLMService:
                 total_tokens=result.prompt_tokens + result.completion_tokens,
             )
             return GenerateResponse(
+                inference_id=uuid4(),
+                prompt_version=self.settings.prompt_version,
                 provider=self.provider.name,
                 model=result.model,
                 text=result.text,
@@ -59,6 +89,24 @@ class LLMService:
             INFERENCE_DURATION.labels(model=model).observe(
                 time.perf_counter() - started
             )
+
+    def _evaluate_safety(self, text: str, stage: str) -> bool:
+        if self.settings.safety_mode == "disabled":
+            return False
+
+        findings = self.safety_evaluator.evaluate(text)
+        SAFETY_EVALUATIONS.labels(
+            stage=stage,
+            outcome="flagged" if findings else "clear",
+        ).inc()
+        blocked = bool(findings) and self.settings.safety_mode == "enforce"
+        for finding in findings:
+            SAFETY_EVENTS.labels(
+                stage=stage,
+                category=finding.category,
+                action="blocked" if blocked else "observed",
+            ).inc()
+        return blocked
 
     async def _generate_with_retry(
         self,

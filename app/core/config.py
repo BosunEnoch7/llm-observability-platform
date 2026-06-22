@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     otel_service_name: str = "llm-observability-service"
     otel_exporter_otlp_endpoint: str = "http://jaeger:4317"
     otel_trace_sample_ratio: float = Field(default=1.0, ge=0, le=1)
+    prompt_version: str = Field(default="v1", pattern=r"^[A-Za-z0-9._-]{1,64}$")
+    safety_mode: Literal["disabled", "monitor", "enforce"] = "monitor"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

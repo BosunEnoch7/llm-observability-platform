@@ -61,6 +61,28 @@
       "type": "timeseries", "title": "Provider retries", "id": 10,
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 21},
       "targets": [{"expr": "sum by (provider) (rate(llm_provider_retries_total[5m]))", "legendFormat": "{{provider}}"}]
+    },
+    {
+      "type": "stat", "title": "Average quality rating", "id": 11,
+      "gridPos": {"h": 7, "w": 6, "x": 0, "y": 29},
+      "fieldConfig": {"defaults": {"unit": "short", "min": 1, "max": 5}},
+      "targets": [{"expr": "sum(rate(llm_quality_rating_sum[15m])) / clamp_min(sum(rate(llm_quality_rating_count[15m])), 0.000000001)", "legendFormat": "rating"}]
+    },
+    {
+      "type": "stat", "title": "Helpful feedback ratio", "id": 12,
+      "gridPos": {"h": 7, "w": 6, "x": 6, "y": 29},
+      "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0, "max": 1}},
+      "targets": [{"expr": "sum(rate(llm_feedback_total{sentiment=\"positive\"}[15m])) / clamp_min(sum(rate(llm_feedback_total[15m])), 0.000000001)", "legendFormat": "helpful"}]
+    },
+    {
+      "type": "timeseries", "title": "Safety events", "id": 13,
+      "gridPos": {"h": 7, "w": 12, "x": 12, "y": 29},
+      "targets": [{"expr": "sum by (stage, category, action) (rate(llm_safety_events_total[5m]))", "legendFormat": "{{stage}} {{category}} {{action}}"}]
+    },
+    {
+      "type": "timeseries", "title": "Requests by prompt version", "id": 14,
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 36},
+      "targets": [{"expr": "sum by (model, prompt_version) (rate(llm_prompt_version_requests_total[5m]))", "legendFormat": "{{model}} {{prompt_version}}"}]
     }
   ],
   "refresh": "10s",
@@ -71,5 +93,5 @@
   "timezone": "browser",
   "title": "LLM Service Overview",
   "uid": "llm-service-overview",
-  "version": 2
+  "version": 3
 }

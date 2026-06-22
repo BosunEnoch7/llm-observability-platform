@@ -20,6 +20,7 @@ Compose, GitHub Actions, and an Azure-focused cloud roadmap.
 - Correlation IDs, structured JSON logs, timeouts, and observable retries
 - Optional OTLP distributed tracing with log/trace correlation
 - A 99% availability SLO with multi-window error-budget alerts
+- Aggregate quality feedback, safety events, and prompt-version telemetry
 - Containerized local operations and automated CI checks
 - A migration path to secure, managed Azure services
 
@@ -53,6 +54,10 @@ metric-label decisions.
 | Inference outcomes | `llm_inference_requests_total` | Model success and failure |
 | Provider attempts | `llm_provider_attempts_total` | Success, error, and timeout attempts |
 | Provider retries | `llm_provider_retries_total` | Dependency instability |
+| Prompt releases | `llm_prompt_version_requests_total` | Version adoption and comparison |
+| Safety findings | `llm_safety_events_total` | Bounded category/action events |
+| Quality rating | `llm_quality_rating` | Aggregate one-to-five user ratings |
+| User feedback | `llm_feedback_total` | Helpful/negative feedback ratios |
 | Token usage | `llm_tokens_total` | Input/output consumption |
 | Estimated cost | `llm_estimated_cost_usd_total` | Cumulative workload cost |
 | Service readiness | `llm_service_ready` | Traffic readiness |
@@ -70,6 +75,7 @@ grafana/                Provisioned data source and dashboard
 alertmanager/           Alert grouping and routing configuration
 tests/                  Unit and integration checks
 docs/architecture/      Design documentation
+docs/ai-observability/  Quality and safety signal design
 docs/runbooks/          Alert response procedures
 docs/azure/             Azure target architecture and migration roadmap
 scripts/                Local smoke tests
@@ -188,6 +194,18 @@ local traffic. The `docker-compose.failure.yml` overlay injects latency and a
 25% simulated provider failure rate to exercise retries, traces, dashboards,
 and SLO alerts. Follow the [load and failure testing guide](docs/operations/load-and-failure-testing.md).
 
+## Quality and safety signals
+
+Generation responses include an `inference_id` and the configured prompt
+version. Clients can submit bounded aggregate feedback to `POST /v1/feedback`.
+Safety evaluation defaults to monitor mode and can be disabled or changed to
+enforcement with `SAFETY_MODE`.
+
+The local safety rules are intentionally small and exist to exercise telemetry
+and operational workflows. They are not a substitute for Azure AI Content
+Safety, policy governance, durable audit storage, and human review. See
+[quality and safety observability](docs/ai-observability/quality-and-safety.md).
+
 ## Azure direction
 
 The intended production path uses Azure Container Registry, Azure Container
@@ -202,5 +220,5 @@ See the [Azure deployment roadmap](docs/azure/roadmap.md).
 1. Core API, metrics, dashboards, alerting, tests, and CI
 2. Azure OpenAI adapter, retries, timeouts, secure configuration, and JSON logs
 3. Distributed traces, SLOs, burn-rate alerts, load testing, and failure injection
-4. LLM quality evaluation, safety signals, and prompt/version telemetry
+4. Quality feedback, safety signals, and prompt-version telemetry
 5. Azure infrastructure-as-code, workload identity, deployment, and operations
