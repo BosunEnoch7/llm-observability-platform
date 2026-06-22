@@ -14,6 +14,11 @@ controls live above the adapters so timeouts, retries, outcomes, logs, and
 metrics behave consistently across providers. Each HTTP request receives a
 correlation ID that is returned to the caller and included in structured logs.
 
+Optional OpenTelemetry instrumentation creates inbound HTTP spans and nested
+provider spans. OTLP export targets Jaeger locally and can be redirected to an
+Azure-compatible telemetry pipeline later. Trace context is added to JSON logs,
+but prompts and responses are excluded from span attributes.
+
 ## Metric-label policy
 
 Labels are restricted to bounded dimensions such as route, HTTP status, model,

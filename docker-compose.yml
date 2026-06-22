@@ -60,6 +60,15 @@ services:
       - prometheus
     restart: unless-stopped
 
+  jaeger:
+    image: jaegertracing/all-in-one:1.68.0
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+    restart: unless-stopped
+
 volumes:
   prometheus-data:
   alertmanager-data:

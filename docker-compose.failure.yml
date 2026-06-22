@@ -1,0 +1,6 @@
+services:
+  llm-service:
+    environment:
+      SIMULATED_FAILURE_RATE: "0.25"
+      SIMULATED_MIN_LATENCY_MS: "500"
+      SIMULATED_MAX_LATENCY_MS: "2500"

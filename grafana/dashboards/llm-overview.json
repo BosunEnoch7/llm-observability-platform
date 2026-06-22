@@ -35,6 +35,32 @@
       "type": "timeseries", "title": "Token usage", "id": 6,
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 6},
       "targets": [{"expr": "sum by (model, direction) (rate(llm_tokens_total[5m]))", "legendFormat": "{{model}} {{direction}}"}]
+    },
+    {
+      "type": "stat", "title": "Availability SLO (30m)", "id": 7,
+      "gridPos": {"h": 7, "w": 6, "x": 0, "y": 14},
+      "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0, "max": 1, "thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "green", "value": 0.99}]}}},
+      "targets": [{"expr": "llm:slo_availability:ratio_rate30m", "legendFormat": "availability"}]
+    },
+    {
+      "type": "timeseries", "title": "Availability error-budget burn rate", "id": 8,
+      "gridPos": {"h": 7, "w": 18, "x": 6, "y": 14},
+      "fieldConfig": {"defaults": {"unit": "short"}},
+      "targets": [
+        {"expr": "llm:slo_error_budget:burn_rate5m", "legendFormat": "5m burn"},
+        {"expr": "llm:slo_error_budget:burn_rate1h", "legendFormat": "1h burn"},
+        {"expr": "vector(14.4)", "legendFormat": "fast threshold"}
+      ]
+    },
+    {
+      "type": "timeseries", "title": "Provider attempts", "id": 9,
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 21},
+      "targets": [{"expr": "sum by (provider, outcome) (rate(llm_provider_attempts_total[5m]))", "legendFormat": "{{provider}} {{outcome}}"}]
+    },
+    {
+      "type": "timeseries", "title": "Provider retries", "id": 10,
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 21},
+      "targets": [{"expr": "sum by (provider) (rate(llm_provider_retries_total[5m]))", "legendFormat": "{{provider}}"}]
     }
   ],
   "refresh": "10s",
@@ -45,5 +71,5 @@
   "timezone": "browser",
   "title": "LLM Service Overview",
   "uid": "llm-service-overview",
-  "version": 1
+  "version": 2
 }

@@ -13,6 +13,7 @@ from app.observability.metrics import (
     PROVIDER_RETRIES,
     TOKENS,
 )
+from app.observability.tracing import provider_span
 from app.providers import LLMProvider, ProviderError, build_provider
 from app.schemas.inference import GenerateRequest, GenerateResponse, Usage
 
@@ -67,10 +68,13 @@ class LLMService:
         attempts = self.settings.llm_max_retries + 1
         for attempt in range(attempts):
             try:
-                result = await asyncio.wait_for(
-                    self.provider.generate(request.prompt, model, request.max_tokens),
-                    timeout=self.settings.llm_request_timeout_seconds,
-                )
+                with provider_span(self.provider.name, model):
+                    result = await asyncio.wait_for(
+                        self.provider.generate(
+                            request.prompt, model, request.max_tokens
+                        ),
+                        timeout=self.settings.llm_request_timeout_seconds,
+                    )
                 PROVIDER_ATTEMPTS.labels(
                     provider=self.provider.name,
                     outcome="success",

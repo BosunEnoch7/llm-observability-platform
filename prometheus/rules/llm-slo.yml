@@ -1,0 +1,72 @@
+groups:
+  - name: llm-availability-slo-recording
+    interval: 30s
+    rules:
+      - record: llm:sli_error:ratio_rate5m
+        expr: |
+          sum(rate(llm_http_requests_total{route="/v1/generate",status_code=~"5.."}[5m]))
+          /
+          clamp_min(sum(rate(llm_http_requests_total{route="/v1/generate"}[5m])), 0.000000001)
+
+      - record: llm:sli_error:ratio_rate30m
+        expr: |
+          sum(rate(llm_http_requests_total{route="/v1/generate",status_code=~"5.."}[30m]))
+          /
+          clamp_min(sum(rate(llm_http_requests_total{route="/v1/generate"}[30m])), 0.000000001)
+
+      - record: llm:sli_error:ratio_rate1h
+        expr: |
+          sum(rate(llm_http_requests_total{route="/v1/generate",status_code=~"5.."}[1h]))
+          /
+          clamp_min(sum(rate(llm_http_requests_total{route="/v1/generate"}[1h])), 0.000000001)
+
+      - record: llm:sli_error:ratio_rate6h
+        expr: |
+          sum(rate(llm_http_requests_total{route="/v1/generate",status_code=~"5.."}[6h]))
+          /
+          clamp_min(sum(rate(llm_http_requests_total{route="/v1/generate"}[6h])), 0.000000001)
+
+      - record: llm:slo_availability:ratio_rate30m
+        expr: 1 - llm:sli_error:ratio_rate30m
+
+      - record: llm:slo_error_budget:burn_rate5m
+        expr: llm:sli_error:ratio_rate5m / 0.01
+
+      - record: llm:slo_error_budget:burn_rate30m
+        expr: llm:sli_error:ratio_rate30m / 0.01
+
+      - record: llm:slo_error_budget:burn_rate1h
+        expr: llm:sli_error:ratio_rate1h / 0.01
+
+      - record: llm:slo_error_budget:burn_rate6h
+        expr: llm:sli_error:ratio_rate6h / 0.01
+
+  - name: llm-availability-slo-alerts
+    rules:
+      - alert: LLMAvailabilityErrorBudgetFastBurn
+        expr: |
+          llm:slo_error_budget:burn_rate5m > 14.4
+          and
+          llm:slo_error_budget:burn_rate1h > 14.4
+        for: 2m
+        labels:
+          severity: critical
+          slo: availability
+        annotations:
+          summary: LLM availability error budget is burning rapidly
+          description: The 99% availability SLO is burning at more than 14.4x across the 5m and 1h windows.
+          runbook_url: /docs/runbooks/availability-slo-burn.md
+
+      - alert: LLMAvailabilityErrorBudgetSlowBurn
+        expr: |
+          llm:slo_error_budget:burn_rate30m > 6
+          and
+          llm:slo_error_budget:burn_rate6h > 6
+        for: 15m
+        labels:
+          severity: warning
+          slo: availability
+        annotations:
+          summary: LLM availability error budget is burning
+          description: The 99% availability SLO is burning at more than 6x across the 30m and 6h windows.
+          runbook_url: /docs/runbooks/availability-slo-burn.md

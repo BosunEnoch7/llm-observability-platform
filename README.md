@@ -18,6 +18,8 @@ Compose, GitHub Actions, and an Azure-focused cloud roadmap.
 - Alertmanager grouping and routing readiness
 - Health probes, runbooks, and bounded-cardinality metric labels
 - Correlation IDs, structured JSON logs, timeouts, and observable retries
+- Optional OTLP distributed tracing with log/trace correlation
+- A 99% availability SLO with multi-window error-budget alerts
 - Containerized local operations and automated CI checks
 - A migration path to secure, managed Azure services
 
@@ -27,8 +29,10 @@ Compose, GitHub Actions, and an Azure-focused cloud roadmap.
 Client ---> FastAPI LLM service ---> LLM provider
                     |
                     +-- /metrics <-- Prometheus ---> Grafana
-                                         |
-                                         +-- alert rules --> Alertmanager
+                    |                    |
+                    |                    +-- alert rules --> Alertmanager
+                    |
+                    +-- OTLP traces -----------------------> Jaeger
 ```
 
 The application exposes its own Prometheus endpoint. A separate metrics exporter
@@ -97,6 +101,7 @@ Open the services:
 | Prometheus | <http://localhost:9090> | None |
 | Alertmanager | <http://localhost:9093> | None |
 | Grafana | <http://localhost:3000> | `admin` / `admin` |
+| Jaeger traces | <http://localhost:16686> | None |
 
 The Grafana password is for local development only and must be replaced by
 managed authentication in Azure.
@@ -151,6 +156,16 @@ file or Azure Key Vault—not source control.
 See [Azure OpenAI operations](docs/operations/azure-openai.md) for authentication,
 timeouts, retry behavior, pricing configuration, and deployment checks.
 
+## Distributed tracing
+
+Set `OTEL_ENABLED=true` to instrument FastAPI requests and provider calls. Traces
+are exported over OTLP to the local Jaeger service, while structured logs gain
+the active `trace_id` and `span_id`. Prompt content is deliberately excluded
+from trace attributes.
+
+See [tracing operations](docs/operations/tracing.md) for local usage and the
+planned Azure Monitor exporter path.
+
 ## Alerts and runbooks
 
 The alert rules cover service unavailability, generation error rate above 5%,
@@ -161,6 +176,17 @@ notification destination is chosen.
 - [Service unavailable](docs/runbooks/llm-service-down.md)
 - [High error rate](docs/runbooks/high-error-rate.md)
 - [High latency](docs/runbooks/high-latency.md)
+- [Availability error-budget burn](docs/runbooks/availability-slo-burn.md)
+
+The availability objective and burn-rate rationale are documented in
+[service-level objectives](docs/sre/service-level-objectives.md).
+
+## Load and failure testing
+
+Run `python scripts/load_test.py --duration 60 --concurrency 5` for controlled
+local traffic. The `docker-compose.failure.yml` overlay injects latency and a
+25% simulated provider failure rate to exercise retries, traces, dashboards,
+and SLO alerts. Follow the [load and failure testing guide](docs/operations/load-and-failure-testing.md).
 
 ## Azure direction
 
@@ -175,6 +201,6 @@ See the [Azure deployment roadmap](docs/azure/roadmap.md).
 
 1. Core API, metrics, dashboards, alerting, tests, and CI
 2. Azure OpenAI adapter, retries, timeouts, secure configuration, and JSON logs
-3. Distributed traces and OpenTelemetry
-4. SLOs, multi-window burn-rate alerts, load testing, and failure injection
+3. Distributed traces, SLOs, burn-rate alerts, load testing, and failure injection
+4. LLM quality evaluation, safety signals, and prompt/version telemetry
 5. Azure infrastructure-as-code, workload identity, deployment, and operations

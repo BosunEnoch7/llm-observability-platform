@@ -23,6 +23,10 @@ class Settings(BaseSettings):
     azure_openai_api_version: str = "2024-10-21"
     azure_openai_api_key: SecretStr | None = None
     azure_use_managed_identity: bool = True
+    otel_enabled: bool = False
+    otel_service_name: str = "llm-observability-service"
+    otel_exporter_otlp_endpoint: str = "http://jaeger:4317"
+    otel_trace_sample_ratio: float = Field(default=1.0, ge=0, le=1)
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
