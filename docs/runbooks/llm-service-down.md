@@ -1,4 +1,4 @@
-﻿# LLMServiceDown runbook
+# LLMServiceDown runbook
 
 1. Confirm the target state in Prometheus under **Status > Targets**.
 2. Check the `llm-service` container state and recent logs.

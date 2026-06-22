@@ -1,4 +1,4 @@
-﻿# LLMHighP95Latency runbook
+# LLMHighP95Latency runbook
 
 1. Compare p50, p95, and p99 inference duration by model.
 2. Check request and token volume for workload changes.

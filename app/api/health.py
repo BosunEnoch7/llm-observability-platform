@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Response, status
 
 from app.observability.metrics import SERVICE_READY
 

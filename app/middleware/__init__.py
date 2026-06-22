@@ -1,1 +1,1 @@
-﻿"""Application middleware."""
+"""Application middleware."""

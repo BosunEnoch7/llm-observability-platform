@@ -1,4 +1,4 @@
-﻿import time
+import time
 
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
@@ -8,7 +8,9 @@ from app.observability.metrics import HTTP_REQUEST_DURATION, HTTP_REQUESTS
 
 
 class PrometheusMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
+    async def dispatch(
+        self, request: Request, call_next: RequestResponseEndpoint
+    ) -> Response:
         if request.url.path == "/metrics":
             return await call_next(request)
 

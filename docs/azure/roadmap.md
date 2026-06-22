@@ -1,4 +1,4 @@
-﻿# Azure deployment roadmap
+# Azure deployment roadmap
 
 The local stack is intentionally cloud-portable. The planned Azure production
 architecture maps its components as follows:

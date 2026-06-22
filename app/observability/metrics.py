@@ -1,4 +1,4 @@
-﻿from prometheus_client import Counter, Gauge, Histogram, Info
+from prometheus_client import Counter, Gauge, Histogram, Info
 
 HTTP_REQUESTS = Counter(
     "llm_http_requests_total",
@@ -17,6 +17,18 @@ INFERENCE_REQUESTS = Counter(
     "llm_inference_requests_total",
     "Total LLM inference attempts.",
     ("model", "outcome"),
+)
+
+PROVIDER_ATTEMPTS = Counter(
+    "llm_provider_attempts_total",
+    "Total provider call attempts, including retries.",
+    ("provider", "outcome"),
+)
+
+PROVIDER_RETRIES = Counter(
+    "llm_provider_retries_total",
+    "Total provider retries.",
+    ("provider",),
 )
 
 INFERENCE_DURATION = Histogram(

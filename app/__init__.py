@@ -1,1 +1,1 @@
-﻿"""LLM observability service package."""
+"""LLM observability service package."""

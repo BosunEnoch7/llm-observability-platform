@@ -1,4 +1,4 @@
-﻿groups:
+groups:
   - name: llm-service
     rules:
       - alert: LLMServiceDown
@@ -34,3 +34,12 @@
         annotations:
           summary: LLM inference p95 latency exceeds five seconds
           description: The p95 inference duration has remained above five seconds.
+
+      - alert: LLMProviderRetrying
+        expr: sum(rate(llm_provider_retries_total[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: LLM provider retries are elevated
+          description: Provider retries have exceeded 0.1 retries per second for five minutes.

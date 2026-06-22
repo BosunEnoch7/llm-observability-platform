@@ -1,4 +1,4 @@
-﻿# LLMHighErrorRate runbook
+# LLMHighErrorRate runbook
 
 1. Break errors down by HTTP status and model in Grafana or Prometheus.
 2. Correlate the start time with deployments and configuration changes.

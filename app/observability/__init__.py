@@ -1,1 +1,1 @@
-﻿"""Metrics and telemetry definitions."""
+"""Metrics and telemetry definitions."""

@@ -1,4 +1,4 @@
-﻿from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 
 
 class GenerateRequest(BaseModel):
@@ -14,6 +14,7 @@ class Usage(BaseModel):
 
 
 class GenerateResponse(BaseModel):
+    provider: str
     model: str
     text: str
     usage: Usage

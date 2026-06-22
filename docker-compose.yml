@@ -1,4 +1,4 @@
-﻿services:
+services:
   llm-service:
     build:
       context: .

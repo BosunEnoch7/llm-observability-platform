@@ -1,14 +1,17 @@
-﻿from fastapi import APIRouter, Depends
+from functools import lru_cache
 
-from app.core.config import Settings, get_settings
+from fastapi import APIRouter, Depends
+
+from app.core.config import settings
 from app.schemas.inference import GenerateRequest, GenerateResponse
 from app.services.llm_service import LLMService
 
 router = APIRouter(prefix="/v1", tags=["inference"])
 
 
-def get_llm_service(config: Settings = Depends(get_settings)) -> LLMService:
-    return LLMService(config)
+@lru_cache
+def get_llm_service() -> LLMService:
+    return LLMService(settings)
 
 
 @router.post("/generate", response_model=GenerateResponse)

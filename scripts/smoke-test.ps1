@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Stop"
 
 Invoke-RestMethod http://localhost:8000/health/ready
 Invoke-RestMethod -Method Post -Uri http://localhost:8000/v1/generate `
