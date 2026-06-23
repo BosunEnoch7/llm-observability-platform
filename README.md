@@ -236,6 +236,7 @@ managed-cloud promotion path.
 - [Screenshot capture guide](docs/portfolio/screenshot-guide.md)
 - [Local evidence collection](docs/portfolio/local-evidence.md)
 - [Project incident and blocker log](docs/operations/project-incident-log.md)
+- [Docker troubleshooting](docs/operations/docker-troubleshooting.md)
 
 ## Roadmap
 
