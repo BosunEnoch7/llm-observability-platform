@@ -16,8 +16,8 @@ correlation ID that is returned to the caller and included in structured logs.
 
 Optional OpenTelemetry instrumentation creates inbound HTTP spans and nested
 provider spans. OTLP export targets Jaeger locally and can be redirected to an
-Azure-compatible telemetry pipeline later. Trace context is added to JSON logs,
-but prompts and responses are excluded from span attributes.
+Azure-compatible telemetry pipeline during cloud promotion. Trace context is
+added to JSON logs, but prompts and responses are excluded from span attributes.
 
 AI-specific telemetry remains split by purpose. Prometheus stores aggregate,
 bounded operational metrics for prompt versions, feedback, and safety events.

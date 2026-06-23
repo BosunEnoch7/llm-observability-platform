@@ -1,6 +1,6 @@
 # Azure deployment roadmap
 
-The local stack is intentionally cloud-portable. The planned Azure production
+The local stack is intentionally cloud-portable. The Azure production
 architecture maps its components as follows:
 
 | Local component | Azure target |
@@ -14,6 +14,17 @@ architecture maps its components as follows:
 | LLM provider | Azure OpenAI through managed identity where supported |
 | GitHub Actions credentials | GitHub OIDC federation, without stored client secrets |
 
-Infrastructure will be defined with Bicep or Terraform in a later phase. The
-application will remain stateless, use health probes, emit bounded-cardinality
-metrics, and receive all environment-specific configuration at runtime.
+The first infrastructure path is now defined with Bicep in `infra/bicep/`, and
+GitHub Actions includes an OIDC-based deployment workflow. The application
+remains stateless, uses health probes, emits bounded-cardinality metrics, and
+receives all environment-specific configuration at runtime.
+
+## Promotion path
+
+1. Run local validation and screenshot evidence.
+2. Configure GitHub environments and Azure federated identity.
+3. Run Bicep `what-if` against the target subscription.
+4. Deploy the foundation and app workflow to `dev`.
+5. Validate `/health/ready`, metrics, logs, and dashboard access.
+6. Promote to `staging` and `prod` only with approval, budgets, and rollback
+   ownership.

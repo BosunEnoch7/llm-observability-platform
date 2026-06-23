@@ -2,12 +2,12 @@
 
 A production-inspired monitoring and observability platform for Large Language
 Model workloads. It combines FastAPI, Prometheus, Grafana, Alertmanager, Docker
-Compose, GitHub Actions, and an Azure-focused cloud roadmap.
+Compose, GitHub Actions, and Azure-ready infrastructure-as-code.
 
-> **Current phase:** a locally runnable observability stack with simulated and
-> Azure OpenAI provider adapters. The simulator makes latency, failures, tokens,
-> cost, dashboards, and alerts testable without an API key. Azure infrastructure
-> deployment follows in a later phase.
+> **Status:** local/repository implementation complete. The simulator makes
+> latency, failures, tokens, cost, dashboards, and alerts testable without an
+> API key. Real Azure deployment is gated on authorized subscription access,
+> GitHub OIDC variables, quota, and cost approval.
 
 ## What this project demonstrates
 
@@ -22,7 +22,8 @@ Compose, GitHub Actions, and an Azure-focused cloud roadmap.
 - A 99% availability SLO with multi-window error-budget alerts
 - Aggregate quality feedback, safety events, and prompt-version telemetry
 - Containerized local operations and automated CI checks
-- A migration path to secure, managed Azure services
+- Azure-ready Bicep infrastructure and GitHub OIDC deployment workflow
+- Portfolio evidence, runbooks, and incident/blocker tracking
 
 ## Architecture
 
@@ -78,8 +79,10 @@ docs/architecture/      Design documentation
 docs/ai-observability/  Quality and safety signal design
 docs/runbooks/          Alert response procedures
 docs/operations/        Tracing, testing, and project incident history
+docs/portfolio/         Completion report and evidence checklist
 docs/azure/             Azure target architecture and migration roadmap
 infra/bicep/            Azure foundation and Container Apps infrastructure
+screenshots/            Portfolio screenshots and validation evidence
 scripts/                Local smoke tests
 .github/workflows/      Continuous integration
 ```
@@ -172,7 +175,7 @@ the active `trace_id` and `span_id`. Prompt content is deliberately excluded
 from trace attributes.
 
 See [tracing operations](docs/operations/tracing.md) for local usage and the
-planned Azure Monitor exporter path.
+Azure Monitor exporter migration path.
 
 ## Alerts and runbooks
 
@@ -220,12 +223,21 @@ Infrastructure-as-code is now included for the first Azure deployment path.
 
 The first Bicep deployment and GitHub OIDC workflow are now included. Review the
 [Azure deployment guide](docs/azure/deployment.md) before provisioning resources,
-and use the [Azure roadmap](docs/azure/roadmap.md) for remaining cloud work.
+and use the [Azure roadmap](docs/azure/roadmap.md) for the managed-cloud
+promotion path.
+
+## Portfolio and completion evidence
+
+- [Project completion report](docs/portfolio/project-completion.md)
+- [Portfolio evidence checklist](docs/portfolio/evidence-checklist.md)
+- [Screenshot capture guide](docs/portfolio/screenshot-guide.md)
+- [Project incident and blocker log](docs/operations/project-incident-log.md)
 
 ## Roadmap
 
-1. Core API, metrics, dashboards, alerting, tests, and CI
-2. Azure OpenAI adapter, retries, timeouts, secure configuration, and JSON logs
-3. Distributed traces, SLOs, burn-rate alerts, load testing, and failure injection
-4. Quality feedback, safety signals, and prompt-version telemetry
-5. Azure deployment validation, managed telemetry ingestion, and portfolio evidence
+1. Core API, metrics, dashboards, alerting, tests, and CI — complete
+2. Azure OpenAI adapter, retries, timeouts, secure configuration, and JSON logs — complete
+3. Distributed traces, SLOs, burn-rate alerts, load testing, and failure injection — complete
+4. Quality feedback, safety signals, and prompt-version telemetry — complete
+5. Azure IaC, deployment workflow, incident log, and portfolio evidence — complete
+6. Real Azure deployment execution — pending authorized cloud access and cost approval

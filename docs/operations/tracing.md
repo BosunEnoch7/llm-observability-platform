@@ -19,8 +19,8 @@ which allows operators to move from an API response to logs and then a trace.
 Only bounded operational attributes are recorded. Prompts, responses, API keys,
 and user identifiers must not be attached to spans.
 
-For Azure, the tracing bootstrap remains behind one application boundary. A
-later deployment phase can replace the OTLP destination or add the Azure Monitor
+For Azure, the tracing bootstrap remains behind one application boundary. Cloud
+promotion can replace the OTLP destination or add the Azure Monitor
 OpenTelemetry distribution without changing request or provider code.
 
 Production sampling should be chosen from traffic volume, retention, cost, and
