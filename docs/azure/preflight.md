@@ -49,6 +49,9 @@ Create GitHub environments named `dev`, `staging`, and `prod`, then define:
 These are environment variables for OIDC identity selection, not client-secret
 credentials.
 
+Use [GitHub OIDC setup](github-oidc.md) to create the federated Azure identity
+and environment-scoped credentials.
+
 ## Required Azure permissions
 
 The federated deployment identity needs permission to:

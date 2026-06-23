@@ -23,7 +23,7 @@ provided.
 
 Create an Entra application or user-assigned identity with a federated GitHub
 credential scoped to the repository and GitHub environment. Configure these as
-GitHub environment variables—not secrets containing client credentials:
+GitHub environment variables, not secrets containing client credentials:
 
 - `AZURE_CLIENT_ID`
 - `AZURE_TENANT_ID`
@@ -37,6 +37,9 @@ subscription or a pre-agreed resource hierarchy.
 
 Create GitHub environments named `dev`, `staging`, and `prod`. Add reviewers and
 deployment protection rules for production.
+
+See [GitHub OIDC setup](github-oidc.md) for the bootstrap command and federated
+credential subject format.
 
 ## Deploy through GitHub Actions
 

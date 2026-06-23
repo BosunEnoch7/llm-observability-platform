@@ -223,9 +223,10 @@ Infrastructure-as-code is now included for the first Azure deployment path.
 
 The first Bicep deployment and GitHub OIDC workflow are now included. Review the
 [Azure preflight guide](docs/azure/preflight.md) and
+[GitHub OIDC setup](docs/azure/github-oidc.md), then follow the
 [Azure deployment guide](docs/azure/deployment.md) before provisioning
-resources, and use the [Azure roadmap](docs/azure/roadmap.md) for the
-managed-cloud promotion path.
+resources. Use the [Azure roadmap](docs/azure/roadmap.md) for the managed-cloud
+promotion path.
 
 ## Portfolio and completion evidence
 
