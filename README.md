@@ -222,9 +222,10 @@ Monitor managed Prometheus, Azure Managed Grafana, and GitHub Actions OIDC.
 Infrastructure-as-code is now included for the first Azure deployment path.
 
 The first Bicep deployment and GitHub OIDC workflow are now included. Review the
-[Azure deployment guide](docs/azure/deployment.md) before provisioning resources,
-and use the [Azure roadmap](docs/azure/roadmap.md) for the managed-cloud
-promotion path.
+[Azure preflight guide](docs/azure/preflight.md) and
+[Azure deployment guide](docs/azure/deployment.md) before provisioning
+resources, and use the [Azure roadmap](docs/azure/roadmap.md) for the
+managed-cloud promotion path.
 
 ## Portfolio and completion evidence
 
@@ -235,9 +236,10 @@ promotion path.
 
 ## Roadmap
 
-1. Core API, metrics, dashboards, alerting, tests, and CI — complete
-2. Azure OpenAI adapter, retries, timeouts, secure configuration, and JSON logs — complete
-3. Distributed traces, SLOs, burn-rate alerts, load testing, and failure injection — complete
-4. Quality feedback, safety signals, and prompt-version telemetry — complete
-5. Azure IaC, deployment workflow, incident log, and portfolio evidence — complete
-6. Real Azure deployment execution — pending authorized cloud access and cost approval
+1. Core API, metrics, dashboards, alerting, tests, and CI - complete
+2. Azure OpenAI adapter, retries, timeouts, secure configuration, and JSON logs - complete
+3. Distributed traces, SLOs, burn-rate alerts, load testing, and failure injection - complete
+4. Quality feedback, safety signals, and prompt-version telemetry - complete
+5. Azure IaC, deployment workflow, incident log, and portfolio evidence - complete
+6. Azure preflight - in progress
+7. Real Azure deployment execution - pending authorized cloud access and cost approval
