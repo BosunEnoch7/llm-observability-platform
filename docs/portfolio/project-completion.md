@@ -7,6 +7,8 @@ scope. The remaining external gate is an authorized Azure subscription
 deployment, which requires GitHub environment variables, Azure permissions,
 quota, and approved cost ownership.
 
+For a concise operator handoff, see [final handoff](final-handoff.md).
+
 ## Delivered capabilities
 
 - FastAPI LLM workload service with health, readiness, generation, feedback, and

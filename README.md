@@ -232,6 +232,7 @@ managed-cloud promotion path.
 ## Portfolio and completion evidence
 
 - [Project completion report](docs/portfolio/project-completion.md)
+- [Final handoff](docs/portfolio/final-handoff.md)
 - [Portfolio evidence checklist](docs/portfolio/evidence-checklist.md)
 - [Screenshot capture guide](docs/portfolio/screenshot-guide.md)
 - [Local evidence collection](docs/portfolio/local-evidence.md)
