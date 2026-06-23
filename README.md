@@ -1,71 +1,297 @@
 # LLM Observability Platform
 
-A production-inspired monitoring and observability platform for Large Language
-Model workloads. It combines FastAPI, Prometheus, Grafana, Alertmanager, Docker
-Compose, GitHub Actions, and Azure-ready infrastructure-as-code.
+Production-style observability platform for Large Language Model workloads,
+built to demonstrate AI DevOps, SRE, monitoring, alerting, cloud readiness, and
+operational documentation.
 
-> **Status:** local/repository implementation complete. The simulator makes
-> latency, failures, tokens, cost, dashboards, and alerts testable without an
-> API key. Real Azure deployment is gated on authorized subscription access,
-> GitHub OIDC variables, quota, and cost approval.
+This project shows how an LLM service can be instrumented, monitored, tested,
+alerted on, documented, and prepared for Azure deployment using modern DevOps
+practices.
+
+## Executive summary
+
+The platform provides a FastAPI-based LLM workload service with Prometheus
+metrics, Grafana dashboards, Alertmanager readiness, SLOs, runbooks, failure
+testing, quality/safety telemetry, GitHub Actions CI, and Azure-ready
+infrastructure-as-code.
+
+It is intentionally designed like a production platform:
+
+- observable by default;
+- safe for local demos without real API keys;
+- ready for Azure promotion through Bicep and GitHub OIDC;
+- documented with runbooks, SLOs, incident history, and handoff notes.
+
+## Current status
+
+Repository implementation is complete.
+
+API-only runtime evidence has been collected from a direct local FastAPI run.
+Full Docker/Grafana screenshots require Docker Desktop access on the host
+machine. Real Azure deployment requires authorized subscription access, GitHub
+OIDC variables, RBAC, quota, and cost approval.
+
+This status is documented honestly because production engineering should not
+claim cloud deployment or dashboard proof that has not been executed.
 
 ## What this project demonstrates
 
-- AI workload instrumentation and token/cost telemetry
-- RED monitoring: request rate, errors, and duration
-- Prometheus metric collection, PromQL, and alert rules
-- Automatically provisioned Grafana dashboards
-- Alertmanager grouping and routing readiness
-- Health probes, runbooks, and bounded-cardinality metric labels
-- Correlation IDs, structured JSON logs, timeouts, and observable retries
-- Optional OTLP distributed tracing with log/trace correlation
-- A 99% availability SLO with multi-window error-budget alerts
-- Aggregate quality feedback, safety events, and prompt-version telemetry
-- Containerized local operations and automated CI checks
-- Azure-ready Bicep infrastructure and GitHub OIDC deployment workflow
-- Portfolio evidence, runbooks, and incident/blocker tracking
+- AI observability for LLM workloads
+- Request, latency, error, token, and cost telemetry
+- Prometheus metrics and PromQL alert rules
+- Grafana dashboard provisioning
+- Alertmanager routing readiness
+- Health and readiness probes
+- SLOs and multi-window burn-rate alerting
+- Load testing and controlled failure injection
+- Structured JSON logs and correlation IDs
+- Optional OpenTelemetry tracing with Jaeger
+- Azure OpenAI provider adapter with managed identity support
+- Secure configuration practices
+- GitHub Actions CI and deployment workflow
+- Azure Bicep infrastructure
+- GitHub OIDC cloud deployment readiness
+- Incident/blocker documentation and operational handoff
+
+## Technology stack
+
+| Area | Tools |
+| --- | --- |
+| API service | Python, FastAPI, Pydantic |
+| Metrics | prometheus-client, Prometheus |
+| Dashboards | Grafana |
+| Alerts | Prometheus alert rules, Alertmanager |
+| Tracing | OpenTelemetry, Jaeger |
+| Runtime | Docker, Docker Compose |
+| CI/CD | GitHub Actions |
+| Cloud target | Azure Container Apps, ACR, Key Vault, Managed Identity, Azure OpenAI |
+| Infrastructure | Azure Bicep |
+| Testing | Pytest, Ruff, custom load testing |
 
 ## Architecture
 
 ```text
-Client ---> FastAPI LLM service ---> LLM provider
-                    |
-                    +-- /metrics <-- Prometheus ---> Grafana
-                    |                    |
-                    |                    +-- alert rules --> Alertmanager
-                    |
-                    +-- OTLP traces -----------------------> Jaeger
+Client
+  |
+  v
+FastAPI LLM Service ---> LLM Provider
+  |
+  +-- /health/live
+  +-- /health/ready
+  +-- /metrics --------> Prometheus ------> Grafana
+  |                         |
+  |                         +-----------> Alertmanager
+  |
+  +-- OTLP traces ------> Jaeger
 ```
 
-The application exposes its own Prometheus endpoint. A separate metrics exporter
-is not required for an instrumented Python service; exporters can be introduced
-later for external systems that cannot expose metrics themselves.
+For cloud promotion, the target path is:
 
-See [the architecture overview](docs/architecture/overview.md) for design and
-metric-label decisions.
+```text
+GitHub Actions
+  |
+  +-- GitHub OIDC
+  |
+  v
+Azure
+  |
+  +-- Azure Container Registry
+  +-- Azure Container Apps
+  +-- Managed Identity
+  +-- Key Vault
+  +-- Azure OpenAI
+  +-- Azure Monitor / Managed Grafana
+```
 
-## Observability signals
+## Key observability signals
 
-| Signal | Prometheus metric | Purpose |
+| Signal | Metric | Why it matters |
 | --- | --- | --- |
-| Request count | `llm_http_requests_total` | Traffic and HTTP outcomes |
-| Success/error rate | Derived from request counters | Reliability monitoring |
-| HTTP latency | `llm_http_request_duration_seconds` | End-to-end API performance |
-| Inference latency | `llm_inference_duration_seconds` | Model/provider performance |
-| Inference outcomes | `llm_inference_requests_total` | Model success and failure |
-| Provider attempts | `llm_provider_attempts_total` | Success, error, and timeout attempts |
-| Provider retries | `llm_provider_retries_total` | Dependency instability |
-| Prompt releases | `llm_prompt_version_requests_total` | Version adoption and comparison |
-| Safety findings | `llm_safety_events_total` | Bounded category/action events |
-| Quality rating | `llm_quality_rating` | Aggregate one-to-five user ratings |
-| User feedback | `llm_feedback_total` | Helpful/negative feedback ratios |
-| Token usage | `llm_tokens_total` | Input/output consumption |
-| Estimated cost | `llm_estimated_cost_usd_total` | Cumulative workload cost |
-| Service readiness | `llm_service_ready` | Traffic readiness |
-| Scrape health | Prometheus `up` | Service reachability |
+| Request count | `llm_http_requests_total` | Measures traffic volume and HTTP outcomes |
+| HTTP latency | `llm_http_request_duration_seconds` | Tracks user-facing API performance |
+| Inference latency | `llm_inference_duration_seconds` | Tracks model/provider performance |
+| Inference outcomes | `llm_inference_requests_total` | Separates successful and failed generations |
+| Provider attempts | `llm_provider_attempts_total` | Shows provider success, error, and timeout attempts |
+| Provider retries | `llm_provider_retries_total` | Highlights dependency instability |
+| Token usage | `llm_tokens_total` | Tracks input/output consumption |
+| Estimated cost | `llm_estimated_cost_usd_total` | Provides cost visibility |
+| Prompt versions | `llm_prompt_version_requests_total` | Tracks prompt release adoption |
+| Safety events | `llm_safety_events_total` | Captures bounded safety categories/actions |
+| Quality ratings | `llm_quality_rating` | Tracks aggregate feedback quality |
+| Readiness | `llm_service_ready` | Indicates whether service should receive traffic |
+| Scrape health | Prometheus `up` | Confirms target reachability |
 
-Prompts, user IDs, and request IDs are deliberately excluded from metric labels
-to avoid high cardinality and accidental sensitive-data exposure.
+Metric labels intentionally avoid prompts, user IDs, request IDs, and other
+unbounded or sensitive values.
+
+## Production-style practices included
+
+- Bounded-cardinality metrics
+- Separate liveness and readiness endpoints
+- Timeouts and observable retries
+- SLO and error-budget thinking
+- Runbooks linked to alerts
+- Failure injection for reliability testing
+- Safe local simulator for repeatable demos
+- Managed identity preferred over static secrets
+- Azure deployment preflight before cloud changes
+- Teardown and cost-control documentation
+- Incident/blocker log with treatment and follow-up
+
+## Quick start with Docker Compose
+
+Requirements:
+
+- Docker Desktop or Docker Engine
+- Docker Compose
+
+```bash
+cp .env.example .env
+docker compose up --build -d
+docker compose ps
+```
+
+PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+docker compose up --build -d
+docker compose ps
+```
+
+Open the services:
+
+| Service | URL | Local credentials |
+| --- | --- | --- |
+| FastAPI docs | <http://localhost:8000/docs> | None |
+| Metrics endpoint | <http://localhost:8000/metrics> | None |
+| Prometheus | <http://localhost:9090> | None |
+| Grafana | <http://localhost:3000> | `admin` / `admin` |
+| Alertmanager | <http://localhost:9093> | None |
+| Jaeger | <http://localhost:16686> | None |
+
+Run a smoke test:
+
+```powershell
+.\scripts\smoke-test.ps1
+```
+
+Collect local evidence:
+
+```powershell
+.\scripts\collect-local-evidence.ps1
+```
+
+If Docker is unavailable, run the API directly and collect API-only evidence:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+.\scripts\collect-local-evidence.ps1 -SkipPrometheus
+```
+
+## Local development
+
+```bash
+python -m venv .venv
+python -m pip install -r requirements.txt
+python -m pytest
+python -m ruff check .
+uvicorn app.main:app --reload
+```
+
+Makefile shortcuts:
+
+```bash
+make validate
+make up
+make smoke
+make evidence
+make load
+make failure-up
+make azure-preflight
+make azure-teardown-dry-run
+```
+
+## Testing and validation
+
+Latest validation snapshot:
+
+- 19 tests passed
+- 87% coverage
+- Ruff lint passed
+- Ruff format check passed
+- Bicep templates compile
+- Grafana dashboard JSON validates
+- API-only evidence collected successfully
+
+The CI workflow validates tests, linting, Docker build readiness, and Bicep
+compilation.
+
+## Azure readiness
+
+The project includes Azure Bicep templates and a GitHub Actions deployment
+workflow.
+
+Provisioned foundation:
+
+- Azure Resource Group
+- Azure Container Registry
+- Azure Container Apps environment
+- User-assigned Managed Identity
+- RBAC-enabled Key Vault
+- Log Analytics
+- Optional Azure OpenAI
+- Optional Azure Monitor workspace
+- Optional Azure Managed Grafana
+
+Azure deployment path:
+
+```powershell
+$env:AZURE_CONFIG_DIR="$PWD\.azure-local"
+az login
+az account set --subscription "<subscription-id>"
+.\scripts\azure-preflight.ps1 -EnvironmentName dev -Location eastus2
+.\scripts\azure-oidc-bootstrap.ps1 `
+  -GitHubOrg "BosunEnoch7" `
+  -GitHubRepo "llm-observability-platform" `
+  -SubscriptionId "<subscription-id>"
+```
+
+Then run Bicep what-if:
+
+```powershell
+az deployment sub what-if `
+  --location eastus2 `
+  --template-file infra/bicep/foundation.bicep `
+  --parameters location=eastus2 environmentName=dev
+```
+
+After approval, trigger the GitHub Actions **Deploy to Azure** workflow for
+`dev`.
+
+## Documentation highlights
+
+- [Architecture overview](docs/architecture/overview.md)
+- [Service-level objectives](docs/sre/service-level-objectives.md)
+- [Load and failure testing](docs/operations/load-and-failure-testing.md)
+- [Quality and safety observability](docs/ai-observability/quality-and-safety.md)
+- [Azure deployment guide](docs/azure/deployment.md)
+- [Azure preflight](docs/azure/preflight.md)
+- [GitHub OIDC setup](docs/azure/github-oidc.md)
+- [Azure teardown and cost control](docs/azure/teardown.md)
+- [Project incident and blocker log](docs/operations/project-incident-log.md)
+- [Final handoff](docs/portfolio/final-handoff.md)
+
+## Portfolio evidence
+
+Evidence and handoff materials:
+
+- [Project completion report](docs/portfolio/project-completion.md)
+- [Final handoff](docs/portfolio/final-handoff.md)
+- [Portfolio evidence checklist](docs/portfolio/evidence-checklist.md)
+- [Screenshot capture guide](docs/portfolio/screenshot-guide.md)
+- [Local evidence collection](docs/portfolio/local-evidence.md)
+- [API-only evidence files](screenshots/evidence-api-only/)
 
 ## Repository structure
 
@@ -74,177 +300,39 @@ app/                    FastAPI service, metrics, middleware, and LLM boundary
 prometheus/             Scrape configuration and alert rules
 grafana/                Provisioned data source and dashboard
 alertmanager/           Alert grouping and routing configuration
-tests/                  Unit and integration checks
-docs/architecture/      Design documentation
-docs/ai-observability/  Quality and safety signal design
-docs/runbooks/          Alert response procedures
-docs/operations/        Tracing, testing, and project incident history
-docs/portfolio/         Completion report and evidence checklist
-docs/azure/             Azure target architecture and migration roadmap
-infra/bicep/            Azure foundation and Container Apps infrastructure
-screenshots/            Portfolio screenshots and validation evidence
-scripts/                Local smoke tests
-.github/workflows/      Continuous integration
+tests/                  Unit and integration tests
+docs/                   Architecture, SRE, operations, Azure, and portfolio docs
+infra/bicep/            Azure infrastructure-as-code
+scripts/                Smoke tests, load tests, evidence, Azure helpers
+screenshots/            Evidence artifacts and screenshot placeholders
+.github/workflows/      CI and Azure deployment workflows
 ```
 
-## Quick start with Docker Compose
+## Recruiter / reviewer notes
 
-Requirements: Docker Engine with Docker Compose.
+This project is built to demonstrate hands-on capability across AI DevOps,
+observability, SRE, cloud operations, and infrastructure automation. It is not a
+toy metrics endpoint; it includes the surrounding operational work expected in
+real systems:
 
-```bash
-cp .env.example .env
-docker compose up --build -d
-docker compose ps
-```
+- dashboards;
+- alert rules;
+- runbooks;
+- SLOs;
+- failure testing;
+- CI/CD;
+- cloud IaC;
+- identity-aware deployment;
+- cost and teardown planning;
+- incident documentation;
+- final handoff.
 
-On PowerShell, copy the environment file with:
+## Final status
 
-```powershell
-Copy-Item .env.example .env
-```
+Project implementation: complete.
 
-Open the services:
+Remaining external execution:
 
-| Service | URL | Local credentials |
-| --- | --- | --- |
-| API documentation | <http://localhost:8000/docs> | None |
-| Metrics | <http://localhost:8000/metrics> | None |
-| Prometheus | <http://localhost:9090> | None |
-| Alertmanager | <http://localhost:9093> | None |
-| Grafana | <http://localhost:3000> | `admin` / `admin` |
-| Jaeger traces | <http://localhost:16686> | None |
-
-The Grafana password is for local development only and must be replaced by
-managed authentication in Azure.
-
-Generate observable traffic:
-
-```bash
-curl -X POST http://localhost:8000/v1/generate \
-  -H "Content-Type: application/json" \
-  -d '{"prompt":"Why does AI observability matter?","max_tokens":64}'
-```
-
-PowerShell users can run the complete smoke test:
-
-```powershell
-./scripts/smoke-test.ps1
-```
-
-Stop the platform with `docker compose down`. Add `--volumes` only when you
-intentionally want to remove locally persisted Grafana, Prometheus, and
-Alertmanager data.
-
-## Local Python development
-
-```bash
-python -m venv .venv
-python -m pip install -r requirements.txt
-python -m pytest
-python -m ruff check app tests
-uvicorn app.main:app --reload
-```
-
-Activate `.venv` before installing dependencies. Configuration options are
-listed in `.env.example`; `.env` and secrets must never be committed.
-
-## Azure OpenAI provider
-
-The simulator remains the default. To select Azure OpenAI, set:
-
-```dotenv
-LLM_PROVIDER=azure_openai
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
-AZURE_OPENAI_DEPLOYMENT=your-deployment-name
-AZURE_USE_MANAGED_IDENTITY=true
-```
-
-Managed identity is the production default. For local development,
-`DefaultAzureCredential` can use an authenticated Azure CLI session. API-key
-mode is available as a fallback but keys belong only in the untracked `.env`
-file or Azure Key Vault—not source control.
-
-See [Azure OpenAI operations](docs/operations/azure-openai.md) for authentication,
-timeouts, retry behavior, pricing configuration, and deployment checks.
-
-## Distributed tracing
-
-Set `OTEL_ENABLED=true` to instrument FastAPI requests and provider calls. Traces
-are exported over OTLP to the local Jaeger service, while structured logs gain
-the active `trace_id` and `span_id`. Prompt content is deliberately excluded
-from trace attributes.
-
-See [tracing operations](docs/operations/tracing.md) for local usage and the
-Azure Monitor exporter migration path.
-
-## Alerts and runbooks
-
-The alert rules cover service unavailability, generation error rate above 5%,
-p95 inference latency above five seconds, and elevated provider retries.
-Alertmanager currently uses a safe local placeholder receiver until a real
-notification destination is chosen.
-
-- [Service unavailable](docs/runbooks/llm-service-down.md)
-- [High error rate](docs/runbooks/high-error-rate.md)
-- [High latency](docs/runbooks/high-latency.md)
-- [Availability error-budget burn](docs/runbooks/availability-slo-burn.md)
-
-Project build blockers, validation issues, and their treatments are tracked in
-the [project incident and blocker log](docs/operations/project-incident-log.md).
-
-The availability objective and burn-rate rationale are documented in
-[service-level objectives](docs/sre/service-level-objectives.md).
-
-## Load and failure testing
-
-Run `python scripts/load_test.py --duration 60 --concurrency 5` for controlled
-local traffic. The `docker-compose.failure.yml` overlay injects latency and a
-25% simulated provider failure rate to exercise retries, traces, dashboards,
-and SLO alerts. Follow the [load and failure testing guide](docs/operations/load-and-failure-testing.md).
-
-## Quality and safety signals
-
-Generation responses include an `inference_id` and the configured prompt
-version. Clients can submit bounded aggregate feedback to `POST /v1/feedback`.
-Safety evaluation defaults to monitor mode and can be disabled or changed to
-enforcement with `SAFETY_MODE`.
-
-The local safety rules are intentionally small and exist to exercise telemetry
-and operational workflows. They are not a substitute for Azure AI Content
-Safety, policy governance, durable audit storage, and human review. See
-[quality and safety observability](docs/ai-observability/quality-and-safety.md).
-
-## Azure direction
-
-The intended production path uses Azure Container Registry, Azure Container
-Apps (or AKS when justified), Azure OpenAI, Key Vault, managed identity, Azure
-Monitor managed Prometheus, Azure Managed Grafana, and GitHub Actions OIDC.
-Infrastructure-as-code is now included for the first Azure deployment path.
-
-The first Bicep deployment and GitHub OIDC workflow are now included. Review the
-[Azure preflight guide](docs/azure/preflight.md) and
-[GitHub OIDC setup](docs/azure/github-oidc.md), then follow the
-[Azure deployment guide](docs/azure/deployment.md) before provisioning
-resources. Review [Azure teardown and cost control](docs/azure/teardown.md)
-before cloud tests. Use the [Azure roadmap](docs/azure/roadmap.md) for the
-managed-cloud promotion path.
-
-## Portfolio and completion evidence
-
-- [Project completion report](docs/portfolio/project-completion.md)
-- [Final handoff](docs/portfolio/final-handoff.md)
-- [Portfolio evidence checklist](docs/portfolio/evidence-checklist.md)
-- [Screenshot capture guide](docs/portfolio/screenshot-guide.md)
-- [Local evidence collection](docs/portfolio/local-evidence.md)
-- [Project incident and blocker log](docs/operations/project-incident-log.md)
-- [Docker troubleshooting](docs/operations/docker-troubleshooting.md)
-
-## Roadmap
-
-1. Core API, metrics, dashboards, alerting, tests, and CI - complete
-2. Azure OpenAI adapter, retries, timeouts, secure configuration, and JSON logs - complete
-3. Distributed traces, SLOs, burn-rate alerts, load testing, and failure injection - complete
-4. Quality feedback, safety signals, and prompt-version telemetry - complete
-5. Azure IaC, deployment workflow, incident log, and portfolio evidence - complete
-6. Azure preflight - in progress
-7. Real Azure deployment execution - pending authorized cloud access and cost approval
+- full Docker screenshots when Docker Desktop is available;
+- real Azure deployment when subscription access, RBAC, quota, OIDC variables,
+  and cost approval are ready.
