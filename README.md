@@ -77,6 +77,7 @@ tests/                  Unit and integration checks
 docs/architecture/      Design documentation
 docs/ai-observability/  Quality and safety signal design
 docs/runbooks/          Alert response procedures
+docs/operations/        Tracing, testing, and project incident history
 docs/azure/             Azure target architecture and migration roadmap
 infra/bicep/            Azure foundation and Container Apps infrastructure
 scripts/                Local smoke tests
@@ -184,6 +185,9 @@ notification destination is chosen.
 - [High error rate](docs/runbooks/high-error-rate.md)
 - [High latency](docs/runbooks/high-latency.md)
 - [Availability error-budget burn](docs/runbooks/availability-slo-burn.md)
+
+Project build blockers, validation issues, and their treatments are tracked in
+the [project incident and blocker log](docs/operations/project-incident-log.md).
 
 The availability objective and burn-rate rationale are documented in
 [service-level objectives](docs/sre/service-level-objectives.md).
