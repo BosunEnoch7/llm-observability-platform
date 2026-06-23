@@ -1,7 +1,8 @@
 param(
     [string]$BaseUrl = "http://localhost:8000",
     [string]$PrometheusUrl = "http://localhost:9090",
-    [string]$OutputDirectory = "screenshots/evidence"
+    [string]$OutputDirectory = "screenshots/evidence",
+    [switch]$SkipPrometheus
 )
 
 $ErrorActionPreference = "Stop"
@@ -17,7 +18,9 @@ function Save-Json {
         [object]$Value
     )
 
-    $Value | ConvertTo-Json -Depth 20 | Set-Content -Path $Path -Encoding utf8
+    $json = $Value | ConvertTo-Json -Depth 20
+    $encoding = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText($Path, $json, $encoding)
 }
 
 function Invoke-Json {
@@ -57,13 +60,30 @@ $feedback = Invoke-Json "$BaseUrl/v1/feedback" "POST" $feedbackBody
 Save-Json (Join-Path $outputPath "feedback-response.json") $feedback
 
 $metrics = Invoke-WebRequest "$BaseUrl/metrics" -UseBasicParsing
-$metrics.Content | Set-Content -Path (Join-Path $outputPath "metrics.txt") -Encoding utf8
+$encoding = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllText((Join-Path $outputPath "metrics.txt"), $metrics.Content, $encoding)
 
-$targets = Invoke-Json "$PrometheusUrl/api/v1/targets"
-Save-Json (Join-Path $outputPath "prometheus-targets.json") $targets
+$evidenceFiles = @(
+    "health-ready.json",
+    "generation-response.json",
+    "feedback-response.json",
+    "metrics.txt"
+)
 
-$rules = Invoke-Json "$PrometheusUrl/api/v1/rules"
-Save-Json (Join-Path $outputPath "prometheus-rules.json") $rules
+if (-not $SkipPrometheus) {
+    $targets = Invoke-Json "$PrometheusUrl/api/v1/targets"
+    Save-Json (Join-Path $outputPath "prometheus-targets.json") $targets
+
+    $rules = Invoke-Json "$PrometheusUrl/api/v1/rules"
+    Save-Json (Join-Path $outputPath "prometheus-rules.json") $rules
+
+    $evidenceFiles += @(
+        "prometheus-targets.json",
+        "prometheus-rules.json"
+    )
+} else {
+    Write-Warning "Skipping Prometheus evidence collection. Use full mode when Docker Compose is available."
+}
 
 $summary = [ordered]@{
     collected_at_utc = (Get-Date).ToUniversalTime().ToString("o")
@@ -72,15 +92,9 @@ $summary = [ordered]@{
     health_status = $health.status
     inference_id = $generation.inference_id
     generated_model = $generation.model
+    prometheus_collected = -not $SkipPrometheus
     output_directory = $OutputDirectory
-    evidence_files = @(
-        "health-ready.json",
-        "generation-response.json",
-        "feedback-response.json",
-        "metrics.txt",
-        "prometheus-targets.json",
-        "prometheus-rules.json"
-    )
+    evidence_files = $evidenceFiles
 }
 
 Save-Json (Join-Path $outputPath "summary.json") $summary

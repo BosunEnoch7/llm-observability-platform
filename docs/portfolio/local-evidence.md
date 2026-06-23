@@ -17,6 +17,14 @@ Wait until the API and Prometheus are healthy, then run:
 .\scripts\collect-local-evidence.ps1
 ```
 
+If Docker or Prometheus is unavailable but the FastAPI app is running directly,
+collect API-only evidence:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+.\scripts\collect-local-evidence.ps1 -SkipPrometheus
+```
+
 By default, evidence is written to:
 
 ```text
@@ -32,6 +40,9 @@ screenshots/evidence/
 - `prometheus-targets.json` - Prometheus scrape target state.
 - `prometheus-rules.json` - loaded Prometheus alert/SLO rules.
 - `summary.json` - collection timestamp and file index.
+
+In `-SkipPrometheus` mode, the Prometheus target and rule files are not
+generated, and `summary.json` sets `prometheus_collected` to `false`.
 
 These files complement screenshots. They should not contain secrets, prompts
 from real users, API keys, tenant IDs, subscription IDs, or private data.

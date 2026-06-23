@@ -1,0 +1,16 @@
+{
+    "collected_at_utc":  "2026-06-23T17:16:25.7694697Z",
+    "base_url":  "http://127.0.0.1:8000",
+    "prometheus_url":  "http://localhost:9090",
+    "health_status":  "ready",
+    "inference_id":  "4de718d9-806c-4db7-8c37-5642b916092b",
+    "generated_model":  "demo-model",
+    "prometheus_collected":  false,
+    "output_directory":  "screenshots/evidence-api-only",
+    "evidence_files":  [
+                           "health-ready.json",
+                           "generation-response.json",
+                           "feedback-response.json",
+                           "metrics.txt"
+                       ]
+}

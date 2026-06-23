@@ -45,3 +45,11 @@ Treatment:
 
 Do not treat this as an application failure unless Docker itself is reachable
 and the Compose services still fail.
+
+If Docker remains unavailable, run FastAPI directly and collect API-only
+evidence:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+.\scripts\collect-local-evidence.ps1 -SkipPrometheus
+```

@@ -1,0 +1,13 @@
+{
+    "inference_id":  "4de718d9-806c-4db7-8c37-5642b916092b",
+    "prompt_version":  "v1",
+    "provider":  "simulated",
+    "model":  "demo-model",
+    "text":  "Simulated response for: Explain why LLM observability matters for production operations.",
+    "usage":  {
+                  "prompt_tokens":  16,
+                  "completion_tokens":  8,
+                  "total_tokens":  24
+              },
+    "estimated_cost_usd":  3.2E-05
+}
