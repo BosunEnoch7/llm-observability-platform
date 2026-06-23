@@ -12,6 +12,12 @@ docker compose up --build -d
 .\scripts\smoke-test.ps1
 ```
 
+Collect machine-readable evidence:
+
+```powershell
+.\scripts\collect-local-evidence.ps1
+```
+
 Open:
 
 - API docs: <http://localhost:8000/docs>
@@ -42,6 +48,9 @@ Grafana local credentials are `admin` / `admin`.
 
 Save screenshots in the `screenshots/` folder using the names listed in
 [the evidence checklist](evidence-checklist.md).
+
+Save generated JSON/text evidence under `screenshots/evidence/`. See
+[local evidence collection](local-evidence.md).
 
 Do not include secrets, API keys, private prompts, subscription IDs, tenant IDs,
 or personal access tokens in screenshots.

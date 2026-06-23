@@ -5,20 +5,28 @@ evidence.
 
 ## Required screenshots
 
-- `screenshots/01-api-docs.png` — FastAPI Swagger UI at `/docs`.
-- `screenshots/02-health-ready.png` — `/health/ready` returning ready status.
-- `screenshots/03-metrics.png` — `/metrics` showing LLM metrics.
-- `screenshots/04-prometheus-targets.png` — Prometheus target for the LLM
+- `screenshots/01-api-docs.png` - FastAPI Swagger UI at `/docs`.
+- `screenshots/02-health-ready.png` - `/health/ready` returning ready status.
+- `screenshots/03-metrics.png` - `/metrics` showing LLM metrics.
+- `screenshots/04-prometheus-targets.png` - Prometheus target for the LLM
   service in the `UP` state.
-- `screenshots/05-prometheus-rules.png` — loaded alert rules.
-- `screenshots/06-grafana-overview.png` — LLM overview dashboard.
-- `screenshots/07-alertmanager.png` — Alertmanager route/status page.
-- `screenshots/08-jaeger-trace.png` — request trace with provider span.
-- `screenshots/09-load-test.png` — load/failure test output.
-- `screenshots/10-github-actions-ci.png` — successful CI workflow.
-- `screenshots/11-azure-deploy-workflow.png` — Azure deploy workflow inputs.
-- `screenshots/12-azure-resources.png` — Azure resources after authorized
+- `screenshots/05-prometheus-rules.png` - loaded alert rules.
+- `screenshots/06-grafana-overview.png` - LLM overview dashboard.
+- `screenshots/07-alertmanager.png` - Alertmanager route/status page.
+- `screenshots/08-jaeger-trace.png` - request trace with provider span.
+- `screenshots/09-load-test.png` - load/failure test output.
+- `screenshots/10-github-actions-ci.png` - successful CI workflow.
+- `screenshots/11-azure-deploy-workflow.png` - Azure deploy workflow inputs.
+- `screenshots/12-azure-resources.png` - Azure resources after authorized
   deployment, when available.
+
+## Machine-readable evidence
+
+- `screenshots/evidence/summary.json` - local evidence collection summary.
+- `screenshots/evidence/health-ready.json` - readiness proof.
+- `screenshots/evidence/metrics.txt` - API metrics proof.
+- `screenshots/evidence/prometheus-targets.json` - scrape target proof.
+- `screenshots/evidence/prometheus-rules.json` - alert rule proof.
 
 ## Evidence narrative
 
