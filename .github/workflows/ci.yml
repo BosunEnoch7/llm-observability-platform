@@ -33,3 +33,16 @@ jobs:
           context: .
           push: false
           tags: llm-observability-platform:test
+
+  infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Bicep templates
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az bicep install
+            az bicep build --file infra/bicep/foundation.bicep --stdout > /dev/null
+            az bicep build --file infra/bicep/app.bicep --stdout > /dev/null
+            az bicep build-params --file infra/bicep/foundation.dev.bicepparam --stdout > /dev/null

@@ -78,6 +78,7 @@ docs/architecture/      Design documentation
 docs/ai-observability/  Quality and safety signal design
 docs/runbooks/          Alert response procedures
 docs/azure/             Azure target architecture and migration roadmap
+infra/bicep/            Azure foundation and Container Apps infrastructure
 scripts/                Local smoke tests
 .github/workflows/      Continuous integration
 ```
@@ -211,9 +212,11 @@ Safety, policy governance, durable audit storage, and human review. See
 The intended production path uses Azure Container Registry, Azure Container
 Apps (or AKS when justified), Azure OpenAI, Key Vault, managed identity, Azure
 Monitor managed Prometheus, Azure Managed Grafana, and GitHub Actions OIDC.
-Infrastructure-as-code will be added in a later phase.
+Infrastructure-as-code is now included for the first Azure deployment path.
 
-See the [Azure deployment roadmap](docs/azure/roadmap.md).
+The first Bicep deployment and GitHub OIDC workflow are now included. Review the
+[Azure deployment guide](docs/azure/deployment.md) before provisioning resources,
+and use the [Azure roadmap](docs/azure/roadmap.md) for remaining cloud work.
 
 ## Roadmap
 
@@ -221,4 +224,4 @@ See the [Azure deployment roadmap](docs/azure/roadmap.md).
 2. Azure OpenAI adapter, retries, timeouts, secure configuration, and JSON logs
 3. Distributed traces, SLOs, burn-rate alerts, load testing, and failure injection
 4. Quality feedback, safety signals, and prompt-version telemetry
-5. Azure infrastructure-as-code, workload identity, deployment, and operations
+5. Azure deployment validation, managed telemetry ingestion, and portfolio evidence

@@ -1,0 +1,158 @@
+name: Deploy to Azure
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Deployment environment
+        type: choice
+        options: [dev, staging, prod]
+        default: dev
+      location:
+        description: Azure region
+        type: string
+        default: eastus2
+      deploy_azure_openai:
+        description: Provision Azure OpenAI (check regional availability first)
+        type: boolean
+        default: false
+      deploy_managed_observability:
+        description: Provision Azure Monitor workspace and Managed Grafana
+        type: boolean
+        default: true
+      llm_provider:
+        description: Runtime LLM provider
+        type: choice
+        options: [simulated, azure_openai]
+        default: simulated
+      azure_openai_deployment:
+        description: Existing Azure OpenAI model deployment name
+        type: string
+        required: false
+      safety_mode:
+        description: Local safety telemetry mode
+        type: choice
+        options: [monitor, enforce, disabled]
+        default: monitor
+      prompt_version:
+        description: Bounded prompt release identifier
+        type: string
+        default: v1
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: azure-${{ inputs.environment }}
+  cancel-in-progress: false
+
+env:
+  WORKLOAD_NAME: llmobs
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sign in to Azure using OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy Azure foundation
+        id: foundation
+        shell: bash
+        run: |
+          deployment_name="llmobs-${{ inputs.environment }}-foundation"
+          az deployment sub create \
+            --name "$deployment_name" \
+            --location "${{ inputs.location }}" \
+            --template-file infra/bicep/foundation.bicep \
+            --parameters \
+              location="${{ inputs.location }}" \
+              workloadName="${WORKLOAD_NAME}" \
+              environmentName="${{ inputs.environment }}" \
+              deployAzureOpenAI="${{ inputs.deploy_azure_openai }}" \
+              deployManagedObservability="${{ inputs.deploy_managed_observability }}"
+
+          output() {
+            az deployment sub show \
+              --name "$deployment_name" \
+              --query "properties.outputs.$1.value" \
+              --output tsv
+          }
+
+          echo "resourceGroupName=$(output resourceGroupName)" >> "$GITHUB_OUTPUT"
+          echo "acrName=$(output acrName)" >> "$GITHUB_OUTPUT"
+          echo "acrLoginServer=$(output acrLoginServer)" >> "$GITHUB_OUTPUT"
+          echo "azureOpenAIAccountName=$(output azureOpenAIAccountName)" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push application image
+        id: image
+        shell: bash
+        run: |
+          az acr login --name "${{ steps.foundation.outputs.acrName }}"
+          image="${{ steps.foundation.outputs.acrLoginServer }}/llm-observability-platform:${GITHUB_SHA}"
+          docker build --tag "$image" .
+          docker push "$image"
+          echo "reference=$image" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy Container App
+        id: app
+        shell: bash
+        env:
+          RESOURCE_GROUP: ${{ steps.foundation.outputs.resourceGroupName }}
+          CONTAINER_IMAGE: ${{ steps.image.outputs.reference }}
+          LLM_PROVIDER: ${{ inputs.llm_provider }}
+          AZURE_OPENAI_ACCOUNT: ${{ steps.foundation.outputs.azureOpenAIAccountName }}
+          AZURE_OPENAI_DEPLOYMENT: ${{ inputs.azure_openai_deployment }}
+        run: |
+          parameters=(
+            "location=${{ inputs.location }}"
+            "workloadName=${WORKLOAD_NAME}"
+            "environmentName=${{ inputs.environment }}"
+            "containerImage=${CONTAINER_IMAGE}"
+            "llmProvider=${LLM_PROVIDER}"
+            "safetyMode=${{ inputs.safety_mode }}"
+            "promptVersion=${{ inputs.prompt_version }}"
+          )
+          if [[ "$LLM_PROVIDER" == "azure_openai" ]]; then
+            if [[ -z "$AZURE_OPENAI_ACCOUNT" || -z "$AZURE_OPENAI_DEPLOYMENT" ]]; then
+              echo "Azure OpenAI provider requires a provisioned account and deployment name." >&2
+              exit 1
+            fi
+            parameters+=(
+              "azureOpenAIAccountName=${AZURE_OPENAI_ACCOUNT}"
+              "azureOpenAIDeployment=${AZURE_OPENAI_DEPLOYMENT}"
+            )
+          fi
+          az deployment group create \
+            --name "llmobs-${{ inputs.environment }}-app" \
+            --resource-group "$RESOURCE_GROUP" \
+            --template-file infra/bicep/app.bicep \
+            --parameters "${parameters[@]}"
+          url=$(az deployment group show \
+            --name "llmobs-${{ inputs.environment }}-app" \
+            --resource-group "$RESOURCE_GROUP" \
+            --query properties.outputs.url.value \
+            --output tsv)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Verify deployed health endpoint
+        shell: bash
+        run: |
+          url="${{ steps.app.outputs.url }}/health/ready"
+          for attempt in {1..12}; do
+            if curl --fail --silent --show-error "$url"; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Health verification failed: $url" >&2
+          exit 1
