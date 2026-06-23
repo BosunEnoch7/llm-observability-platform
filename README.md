@@ -225,8 +225,9 @@ The first Bicep deployment and GitHub OIDC workflow are now included. Review the
 [Azure preflight guide](docs/azure/preflight.md) and
 [GitHub OIDC setup](docs/azure/github-oidc.md), then follow the
 [Azure deployment guide](docs/azure/deployment.md) before provisioning
-resources. Use the [Azure roadmap](docs/azure/roadmap.md) for the managed-cloud
-promotion path.
+resources. Review [Azure teardown and cost control](docs/azure/teardown.md)
+before cloud tests. Use the [Azure roadmap](docs/azure/roadmap.md) for the
+managed-cloud promotion path.
 
 ## Portfolio and completion evidence
 

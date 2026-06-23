@@ -75,6 +75,7 @@ Use `az deployment sub what-if` with the intended subscription before approval.
 Azure Managed Grafana, Azure OpenAI, Container Apps, Log Analytics, and retained
 telemetry can incur charges. Review pricing, budgets, and retention before
 deployment. Dev environments should have an explicit owner and teardown plan.
+See [Azure teardown and cost control](teardown.md) before running cloud tests.
 
 Purge-protected Key Vault cannot be immediately destroyed permanently. This is
 intentional production protection, but it must be understood before test
