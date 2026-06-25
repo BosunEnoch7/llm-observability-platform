@@ -1,0 +1,60 @@
+{
+    "status":  "success",
+    "data":  {
+                 "activeTargets":  [
+                                       {
+                                           "discoveredLabels":  {
+                                                                    "__address__":  "llm-service:8000",
+                                                                    "__metrics_path__":  "/metrics",
+                                                                    "__scheme__":  "http",
+                                                                    "__scrape_interval__":  "15s",
+                                                                    "__scrape_timeout__":  "10s",
+                                                                    "job":  "llm-service"
+                                                                },
+                                           "labels":  {
+                                                          "instance":  "llm-service:8000",
+                                                          "job":  "llm-service"
+                                                      },
+                                           "scrapePool":  "llm-service",
+                                           "scrapeUrl":  "http://llm-service:8000/metrics",
+                                           "globalUrl":  "http://llm-service:8000/metrics",
+                                           "lastError":  "",
+                                           "lastScrape":  "2026-06-25T12:16:41.933013884Z",
+                                           "lastScrapeDuration":  0.036426852,
+                                           "health":  "up",
+                                           "scrapeInterval":  "15s",
+                                           "scrapeTimeout":  "10s"
+                                       },
+                                       {
+                                           "discoveredLabels":  {
+                                                                    "__address__":  "localhost:9090",
+                                                                    "__metrics_path__":  "/metrics",
+                                                                    "__scheme__":  "http",
+                                                                    "__scrape_interval__":  "15s",
+                                                                    "__scrape_timeout__":  "10s",
+                                                                    "job":  "prometheus"
+                                                                },
+                                           "labels":  {
+                                                          "instance":  "localhost:9090",
+                                                          "job":  "prometheus"
+                                                      },
+                                           "scrapePool":  "prometheus",
+                                           "scrapeUrl":  "http://localhost:9090/metrics",
+                                           "globalUrl":  "http://c781f25586d1:9090/metrics",
+                                           "lastError":  "",
+                                           "lastScrape":  "2026-06-25T12:16:33.057488479Z",
+                                           "lastScrapeDuration":  0.020251286,
+                                           "health":  "up",
+                                           "scrapeInterval":  "15s",
+                                           "scrapeTimeout":  "10s"
+                                       }
+                                   ],
+                 "droppedTargets":  [
+
+                                    ],
+                 "droppedTargetCounts":  {
+                                             "llm-service":  0,
+                                             "prometheus":  0
+                                         }
+             }
+}

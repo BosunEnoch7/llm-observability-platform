@@ -1,0 +1,185 @@
+# HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 649.0
+python_gc_objects_collected_total{generation="1"} 15.0
+python_gc_objects_collected_total{generation="2"} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_uncollectable_total{generation="1"} 0.0
+python_gc_objects_uncollectable_total{generation="2"} 0.0
+# HELP python_gc_collections_total Number of times this generation was collected
+# TYPE python_gc_collections_total counter
+python_gc_collections_total{generation="0"} 108.0
+python_gc_collections_total{generation="1"} 9.0
+python_gc_collections_total{generation="2"} 0.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation="CPython",major="3",minor="12",patchlevel="13",version="3.12.13"} 1.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 2.43679232e+08
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 5.7171968e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.78238977888e+09
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 7.6899999999999995
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 16.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP llm_http_requests_total Total HTTP requests handled by the service.
+# TYPE llm_http_requests_total counter
+llm_http_requests_total{method="GET",route="/health/ready",status_code="200"} 3.0
+llm_http_requests_total{method="POST",route="/v1/generate",status_code="200"} 2.0
+llm_http_requests_total{method="GET",route="unmatched",status_code="200"} 2.0
+llm_http_requests_total{method="POST",route="/v1/feedback",status_code="202"} 1.0
+# HELP llm_http_requests_created Total HTTP requests handled by the service.
+# TYPE llm_http_requests_created gauge
+llm_http_requests_created{method="GET",route="/health/ready",status_code="200"} 1.7823897933185024e+09
+llm_http_requests_created{method="POST",route="/v1/generate",status_code="200"} 1.7823898017780402e+09
+llm_http_requests_created{method="GET",route="unmatched",status_code="200"} 1.7823898018719218e+09
+llm_http_requests_created{method="POST",route="/v1/feedback",status_code="202"} 1.7823898031774313e+09
+# HELP llm_http_request_duration_seconds HTTP request duration in seconds.
+# TYPE llm_http_request_duration_seconds histogram
+llm_http_request_duration_seconds_bucket{le="0.05",method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_bucket{le="0.1",method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_bucket{le="0.25",method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_bucket{le="0.5",method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_bucket{le="1.0",method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_bucket{le="2.5",method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_bucket{le="5.0",method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_bucket{le="10.0",method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_bucket{le="+Inf",method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_count{method="GET",route="/health/ready"} 3.0
+llm_http_request_duration_seconds_sum{method="GET",route="/health/ready"} 0.0038316810000651458
+llm_http_request_duration_seconds_bucket{le="0.05",method="POST",route="/v1/generate"} 0.0
+llm_http_request_duration_seconds_bucket{le="0.1",method="POST",route="/v1/generate"} 0.0
+llm_http_request_duration_seconds_bucket{le="0.25",method="POST",route="/v1/generate"} 1.0
+llm_http_request_duration_seconds_bucket{le="0.5",method="POST",route="/v1/generate"} 2.0
+llm_http_request_duration_seconds_bucket{le="1.0",method="POST",route="/v1/generate"} 2.0
+llm_http_request_duration_seconds_bucket{le="2.5",method="POST",route="/v1/generate"} 2.0
+llm_http_request_duration_seconds_bucket{le="5.0",method="POST",route="/v1/generate"} 2.0
+llm_http_request_duration_seconds_bucket{le="10.0",method="POST",route="/v1/generate"} 2.0
+llm_http_request_duration_seconds_bucket{le="+Inf",method="POST",route="/v1/generate"} 2.0
+llm_http_request_duration_seconds_count{method="POST",route="/v1/generate"} 2.0
+llm_http_request_duration_seconds_sum{method="POST",route="/v1/generate"} 0.562799183000152
+llm_http_request_duration_seconds_bucket{le="0.05",method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_bucket{le="0.1",method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_bucket{le="0.25",method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_bucket{le="0.5",method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_bucket{le="1.0",method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_bucket{le="2.5",method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_bucket{le="5.0",method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_bucket{le="10.0",method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_bucket{le="+Inf",method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_count{method="GET",route="unmatched"} 2.0
+llm_http_request_duration_seconds_sum{method="GET",route="unmatched"} 0.03225781099990854
+llm_http_request_duration_seconds_bucket{le="0.05",method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_bucket{le="0.1",method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_bucket{le="0.25",method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_bucket{le="0.5",method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_bucket{le="1.0",method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_bucket{le="2.5",method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_bucket{le="5.0",method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_bucket{le="10.0",method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_bucket{le="+Inf",method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_count{method="POST",route="/v1/feedback"} 1.0
+llm_http_request_duration_seconds_sum{method="POST",route="/v1/feedback"} 0.0116259460000947
+# HELP llm_http_request_duration_seconds_created HTTP request duration in seconds.
+# TYPE llm_http_request_duration_seconds_created gauge
+llm_http_request_duration_seconds_created{method="GET",route="/health/ready"} 1.7823897933185887e+09
+llm_http_request_duration_seconds_created{method="POST",route="/v1/generate"} 1.7823898017781236e+09
+llm_http_request_duration_seconds_created{method="GET",route="unmatched"} 1.7823898018719883e+09
+llm_http_request_duration_seconds_created{method="POST",route="/v1/feedback"} 1.7823898031775007e+09
+# HELP llm_inference_requests_total Total LLM inference attempts.
+# TYPE llm_inference_requests_total counter
+llm_inference_requests_total{model="demo-model",outcome="success"} 2.0
+# HELP llm_inference_requests_created Total LLM inference attempts.
+# TYPE llm_inference_requests_created gauge
+llm_inference_requests_created{model="demo-model",outcome="success"} 1.7823898017765734e+09
+# HELP llm_provider_attempts_total Total provider call attempts, including retries.
+# TYPE llm_provider_attempts_total counter
+llm_provider_attempts_total{outcome="success",provider="simulated"} 2.0
+# HELP llm_provider_attempts_created Total provider call attempts, including retries.
+# TYPE llm_provider_attempts_created gauge
+llm_provider_attempts_created{outcome="success",provider="simulated"} 1.7823898017756114e+09
+# HELP llm_provider_retries_total Total provider retries.
+# TYPE llm_provider_retries_total counter
+# HELP llm_inference_duration_seconds LLM inference duration in seconds.
+# TYPE llm_inference_duration_seconds histogram
+llm_inference_duration_seconds_bucket{le="0.1",model="demo-model"} 0.0
+llm_inference_duration_seconds_bucket{le="0.25",model="demo-model"} 1.0
+llm_inference_duration_seconds_bucket{le="0.5",model="demo-model"} 2.0
+llm_inference_duration_seconds_bucket{le="1.0",model="demo-model"} 2.0
+llm_inference_duration_seconds_bucket{le="2.5",model="demo-model"} 2.0
+llm_inference_duration_seconds_bucket{le="5.0",model="demo-model"} 2.0
+llm_inference_duration_seconds_bucket{le="10.0",model="demo-model"} 2.0
+llm_inference_duration_seconds_bucket{le="30.0",model="demo-model"} 2.0
+llm_inference_duration_seconds_bucket{le="+Inf",model="demo-model"} 2.0
+llm_inference_duration_seconds_count{model="demo-model"} 2.0
+llm_inference_duration_seconds_sum{model="demo-model"} 0.45884320300046966
+# HELP llm_inference_duration_seconds_created LLM inference duration in seconds.
+# TYPE llm_inference_duration_seconds_created gauge
+llm_inference_duration_seconds_created{model="demo-model"} 1.7823898017768471e+09
+# HELP llm_tokens_total Estimated tokens consumed.
+# TYPE llm_tokens_total counter
+llm_tokens_total{direction="input",model="demo-model"} 26.0
+llm_tokens_total{direction="output",model="demo-model"} 16.0
+# HELP llm_tokens_created Estimated tokens consumed.
+# TYPE llm_tokens_created gauge
+llm_tokens_created{direction="input",model="demo-model"} 1.782389801775708e+09
+llm_tokens_created{direction="output",model="demo-model"} 1.7823898017757745e+09
+# HELP llm_estimated_cost_usd_total Estimated cumulative inference cost in US dollars.
+# TYPE llm_estimated_cost_usd_total counter
+llm_estimated_cost_usd_total{model="demo-model"} 5.8e-05
+# HELP llm_estimated_cost_usd_created Estimated cumulative inference cost in US dollars.
+# TYPE llm_estimated_cost_usd_created gauge
+llm_estimated_cost_usd_created{model="demo-model"} 1.7823898017758386e+09
+# HELP llm_service_ready Whether the service is ready to receive traffic.
+# TYPE llm_service_ready gauge
+llm_service_ready 1.0
+# HELP llm_service_info Static service build and environment information.
+# TYPE llm_service_info gauge
+llm_service_info{environment="development"} 1.0
+# HELP llm_prompt_version_requests_total Inference requests by operator-controlled prompt version.
+# TYPE llm_prompt_version_requests_total counter
+llm_prompt_version_requests_total{model="demo-model",prompt_version="v1"} 2.0
+# HELP llm_prompt_version_requests_created Inference requests by operator-controlled prompt version.
+# TYPE llm_prompt_version_requests_created gauge
+llm_prompt_version_requests_created{model="demo-model",prompt_version="v1"} 1.7823898015027366e+09
+# HELP llm_safety_evaluations_total Total local safety evaluations.
+# TYPE llm_safety_evaluations_total counter
+llm_safety_evaluations_total{outcome="clear",stage="input"} 2.0
+llm_safety_evaluations_total{outcome="clear",stage="output"} 2.0
+# HELP llm_safety_evaluations_created Total local safety evaluations.
+# TYPE llm_safety_evaluations_created gauge
+llm_safety_evaluations_created{outcome="clear",stage="input"} 1.782389801503069e+09
+llm_safety_evaluations_created{outcome="clear",stage="output"} 1.7823898017759857e+09
+# HELP llm_safety_events_total Categorized safety findings and actions.
+# TYPE llm_safety_events_total counter
+# HELP llm_quality_rating User-submitted response quality rating from one to five.
+# TYPE llm_quality_rating histogram
+llm_quality_rating_bucket{category="other",le="1.0"} 0.0
+llm_quality_rating_bucket{category="other",le="2.0"} 0.0
+llm_quality_rating_bucket{category="other",le="3.0"} 0.0
+llm_quality_rating_bucket{category="other",le="4.0"} 0.0
+llm_quality_rating_bucket{category="other",le="5.0"} 1.0
+llm_quality_rating_bucket{category="other",le="+Inf"} 1.0
+llm_quality_rating_count{category="other"} 1.0
+llm_quality_rating_sum{category="other"} 5.0
+# HELP llm_quality_rating_created User-submitted response quality rating from one to five.
+# TYPE llm_quality_rating_created gauge
+llm_quality_rating_created{category="other"} 1.782389803176556e+09
+# HELP llm_feedback_total Aggregate user feedback by sentiment and category.
+# TYPE llm_feedback_total counter
+llm_feedback_total{category="other",sentiment="positive"} 1.0
+# HELP llm_feedback_created Aggregate user feedback by sentiment and category.
+# TYPE llm_feedback_created gauge
+llm_feedback_created{category="other",sentiment="positive"} 1.7823898031768103e+09

@@ -39,8 +39,8 @@ Treatment:
 
    ```powershell
    docker compose up --build -d
-   .\scripts\smoke-test.ps1
-   .\scripts\collect-local-evidence.ps1
+   powershell -ExecutionPolicy Bypass -File .\scripts\smoke-test.ps1
+   powershell -ExecutionPolicy Bypass -File .\scripts\collect-local-evidence.ps1
    ```
 
 Do not treat this as an application failure unless Docker itself is reachable
@@ -51,5 +51,25 @@ evidence:
 
 ```powershell
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-.\scripts\collect-local-evidence.ps1 -SkipPrometheus
+powershell -ExecutionPolicy Bypass -File .\scripts\collect-local-evidence.ps1 -SkipPrometheus
 ```
+
+## Package downloads fail during image build
+
+Symptoms include DNS timeouts for `files.pythonhosted.org` or a misleading
+`No matching distribution found` message after package metadata downloads stall.
+
+Treatment:
+
+1. Confirm the host has internet access.
+2. Retry the cached build.
+3. If Docker's internal DNS remains unstable, build the application image with:
+
+   ```powershell
+   docker build --network=host -t llm-observability-platform-llm-service:latest .
+   docker compose up -d --no-build
+   ```
+
+The runtime image installs only `requirements.txt`. Test, coverage, and lint
+tools live in `requirements-dev.txt`, keeping production builds smaller and
+reducing their dependency surface.

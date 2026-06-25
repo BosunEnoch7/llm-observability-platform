@@ -26,10 +26,13 @@ It is intentionally designed like a production platform:
 
 Repository implementation is complete.
 
-API-only runtime evidence has been collected from a direct local FastAPI run.
-Full Docker/Grafana screenshots require Docker Desktop access on the host
-machine. Real Azure deployment requires authorized subscription access, GitHub
-OIDC variables, RBAC, quota, and cost approval.
+The complete local Docker Compose stack has been started and verified. Runtime
+evidence includes API health, generation, feedback, metrics, Prometheus scrape
+targets, and loaded alert rules. Grafana health is confirmed; optional visual
+screenshots can be captured from the running local dashboard.
+
+Real Azure deployment requires authorized subscription access, GitHub OIDC
+variables, RBAC, quota, and cost approval.
 
 This status is documented honestly because production engineering should not
 claim cloud deployment or dashboard proof that has not been executed.
@@ -173,27 +176,27 @@ Open the services:
 Run a smoke test:
 
 ```powershell
-.\scripts\smoke-test.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\smoke-test.ps1
 ```
 
 Collect local evidence:
 
 ```powershell
-.\scripts\collect-local-evidence.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\collect-local-evidence.ps1
 ```
 
 If Docker is unavailable, run the API directly and collect API-only evidence:
 
 ```powershell
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-.\scripts\collect-local-evidence.ps1 -SkipPrometheus
+powershell -ExecutionPolicy Bypass -File .\scripts\collect-local-evidence.ps1 -SkipPrometheus
 ```
 
 ## Local development
 
 ```bash
 python -m venv .venv
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt
 python -m pytest
 python -m ruff check .
 uvicorn app.main:app --reload
@@ -222,7 +225,10 @@ Latest validation snapshot:
 - Ruff format check passed
 - Bicep templates compile
 - Grafana dashboard JSON validates
-- API-only evidence collected successfully
+- Docker Compose stack verified across five services
+- Grafana database health reports `ok`
+- Prometheus reports two active targets and four rule groups
+- Full local machine-readable evidence collected successfully
 
 The CI workflow validates tests, linting, Docker build readiness, and Bicep
 compilation.
@@ -291,6 +297,7 @@ Evidence and handoff materials:
 - [Portfolio evidence checklist](docs/portfolio/evidence-checklist.md)
 - [Screenshot capture guide](docs/portfolio/screenshot-guide.md)
 - [Local evidence collection](docs/portfolio/local-evidence.md)
+- [Full Docker/Prometheus evidence files](screenshots/evidence/)
 - [API-only evidence files](screenshots/evidence-api-only/)
 
 ## Repository structure
@@ -333,6 +340,6 @@ Project implementation: complete.
 
 Remaining external execution:
 
-- full Docker screenshots when Docker Desktop is available;
+- optional polished dashboard screenshots for the portfolio gallery;
 - real Azure deployment when subscription access, RBAC, quota, OIDC variables,
   and cost approval are ready.

@@ -1,7 +1,7 @@
 .PHONY: install test lint validate up down smoke evidence load failure-up azure-preflight azure-teardown-dry-run
 
 install:
-	python -m pip install -r requirements.txt
+	python -m pip install -r requirements-dev.txt
 
 test:
 	python -m pytest --cov=app --cov-report=term-missing --cov-fail-under=85
