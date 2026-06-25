@@ -1,5 +1,7 @@
 # LLM Observability Platform
 
+[![CI](https://github.com/BosunEnoch7/llm-observability-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/BosunEnoch7/llm-observability-platform/actions/workflows/ci.yml)
+
 Production-style observability platform for Large Language Model workloads,
 built to demonstrate AI DevOps, SRE, monitoring, alerting, cloud readiness, and
 operational documentation.
