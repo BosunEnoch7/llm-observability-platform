@@ -275,6 +275,12 @@ az deployment sub what-if `
 After approval, trigger the GitHub Actions **Deploy to Azure** workflow for
 `dev`.
 
+Current Azure execution status: authentication and preflight passed, but the
+selected subscription's single Container Apps environment quota is already
+used by an active staging workload. The safe next step is a quota increase or a
+separate authorized subscription; the project will not delete or silently share
+another workload's environment.
+
 ## Documentation highlights
 
 - [Architecture overview](docs/architecture/overview.md)

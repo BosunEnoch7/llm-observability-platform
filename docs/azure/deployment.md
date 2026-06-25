@@ -70,6 +70,17 @@ Template compilation does not validate subscription quota, provider
 registration, Azure OpenAI regional availability, or deployment permissions.
 Use `az deployment sub what-if` with the intended subscription before approval.
 
+### Container Apps environment quota
+
+The foundation intentionally creates a dedicated Container Apps environment for
+workload isolation. Some subscriptions permit only one global environment by
+default. If another active workload already consumes that quota, the safe
+resolution is a quota increase or a separate authorized subscription.
+
+Sharing or deleting an existing environment is not an automatic workaround:
+both choices change workload isolation and ownership boundaries and require
+explicit architectural approval.
+
 ## Cost and teardown
 
 Azure Managed Grafana, Azure OpenAI, Container Apps, Log Analytics, and retained

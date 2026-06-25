@@ -12,8 +12,11 @@ Current honest status:
 - Full Docker Compose runtime evidence: collected.
 - Grafana, Prometheus, Alertmanager, Jaeger, and the API: running and verified.
 - Visual dashboard screenshots: optional portfolio-polish step.
-- Real Azure deployment: pending Azure login, GitHub OIDC setup, RBAC, quota,
-  and cost approval.
+- Azure authentication and preflight: completed.
+- Azure foundation what-if: blocked by the subscription's consumed Container
+  Apps environment quota.
+- Real Azure deployment: pending quota resolution, GitHub OIDC setup, RBAC, and
+  cost approval.
 
 This is the correct production-style boundary: the platform is ready, but cloud
 execution should not be faked without authorized access.
@@ -122,5 +125,7 @@ Delete dev resources:
 ## Final notes
 
 The local platform and repository are complete. The remaining substantive work
-is authorized Azure execution. Before deployment, confirm subscription
-ownership, budget, provider availability, RBAC, and teardown approval.
+is authorized Azure execution. The current subscription already uses its
+Container Apps environment quota for an active staging workload, so request a
+quota increase or select a separate authorized subscription. Before deployment,
+also confirm budget, provider availability, RBAC, and teardown approval.

@@ -27,7 +27,9 @@ The script performs read-only checks:
 - Bicep template compilation;
 - Docker Compose configuration rendering;
 - Azure login state;
-- Azure resource provider registration state when logged in.
+- Azure resource provider registration state when logged in;
+- existing Azure Container Apps environments that may consume a low
+  subscription-level environment quota.
 
 If the script exits with code `2`, Azure CLI is installed but not logged in for
 the isolated project config. Log in before deployment:
@@ -80,6 +82,11 @@ az deployment sub what-if `
 
 Do not continue if the what-if shows unexpected resource names, regions, role
 assignments, or cost-bearing services.
+
+If what-if returns `MaxNumberOfGlobalEnvironmentsInSubExceeded`, do not delete
+or reuse an environment owned by another workload merely to bypass the quota.
+Request a quota increase, use a separate authorized subscription, or obtain
+explicit approval to redesign the deployment around a shared environment.
 
 ## Status decision
 

@@ -78,5 +78,25 @@ foreach ($provider in $providers) {
     Write-Host "  $provider`t$state"
 }
 
+Write-Host "Checking existing Azure Container Apps environments..."
+$containerAppsEnvironmentsJson = & az containerapp env list `
+    --query "[].{name:name,resourceGroup:resourceGroup,location:location}" `
+    --output json
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Warning "Could not list Container Apps environments. The what-if step must validate subscription quota."
+} else {
+    $containerAppsEnvironments = @($containerAppsEnvironmentsJson | ConvertFrom-Json)
+    Write-Host "  Existing environments: $($containerAppsEnvironments.Count)"
+
+    foreach ($environment in $containerAppsEnvironments) {
+        Write-Host "  $($environment.name)`t$($environment.resourceGroup)`t$($environment.location)"
+    }
+
+    if ($containerAppsEnvironments.Count -gt 0) {
+        Write-Warning "Some subscriptions have a low global Container Apps environment quota. The foundation creates a dedicated environment, so confirm quota with what-if before deployment."
+    }
+}
+
 Write-Host "Preflight complete. Next safe step is a subscription-scope what-if:"
 Write-Host "az deployment sub what-if --location $Location --template-file infra/bicep/foundation.bicep --parameters location=$Location environmentName=$EnvironmentName"
