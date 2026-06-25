@@ -1,9 +1,9 @@
 {
-    "collected_at_utc":  "2026-06-25T12:16:43.5231664Z",
+    "collected_at_utc":  "2026-06-25T17:55:20.5310155Z",
     "base_url":  "http://localhost:8000",
     "prometheus_url":  "http://localhost:9090",
     "health_status":  "ready",
-    "inference_id":  "adcdafdc-2f57-4ca9-855b-5e9658204f59",
+    "inference_id":  "28f859ed-fa63-478c-85b2-9b65957eee13",
     "generated_model":  "demo-model",
     "prometheus_collected":  true,
     "output_directory":  "screenshots/evidence",

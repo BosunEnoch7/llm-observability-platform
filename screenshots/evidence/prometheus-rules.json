@@ -7,7 +7,7 @@
                                     "file":  "/etc/prometheus/rules/llm-alerts.yml",
                                     "rules":  [
                                                   {
-                                                      "state":  "pending",
+                                                      "state":  "inactive",
                                                       "name":  "LLMServiceDown",
                                                       "query":  "up{job=\"llm-service\"} == 0",
                                                       "duration":  60,
@@ -20,25 +20,11 @@
                                                                           "summary":  "LLM service is unavailable"
                                                                       },
                                                       "alerts":  [
-                                                                     {
-                                                                         "labels":  {
-                                                                                        "alertname":  "LLMServiceDown",
-                                                                                        "instance":  "llm-service:8000",
-                                                                                        "job":  "llm-service",
-                                                                                        "severity":  "critical"
-                                                                                    },
-                                                                         "annotations":  {
-                                                                                             "description":  "Prometheus has failed to scrape the LLM service for one minute.",
-                                                                                             "summary":  "LLM service is unavailable"
-                                                                                         },
-                                                                         "state":  "pending",
-                                                                         "activeAt":  "2026-06-25T12:16:21.524145869Z",
-                                                                         "value":  "0e+00"
-                                                                     }
+
                                                                  ],
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.089794393,
-                                                      "lastEvaluation":  "2026-06-25T12:16:36.253576207Z",
+                                                      "evaluationTime":  0.000285639,
+                                                      "lastEvaluation":  "2026-06-25T17:55:05.815901113Z",
                                                       "type":  "alerting"
                                                   },
                                                   {
@@ -58,8 +44,8 @@
 
                                                                  ],
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.002092623,
-                                                      "lastEvaluation":  "2026-06-25T12:16:36.34342341Z",
+                                                      "evaluationTime":  0.000407956,
+                                                      "lastEvaluation":  "2026-06-25T17:55:05.816199054Z",
                                                       "type":  "alerting"
                                                   },
                                                   {
@@ -79,8 +65,8 @@
 
                                                                  ],
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000759154,
-                                                      "lastEvaluation":  "2026-06-25T12:16:36.345549239Z",
+                                                      "evaluationTime":  0.000315443,
+                                                      "lastEvaluation":  "2026-06-25T17:55:05.816618712Z",
                                                       "type":  "alerting"
                                                   },
                                                   {
@@ -100,15 +86,15 @@
 
                                                                  ],
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000251651,
-                                                      "lastEvaluation":  "2026-06-25T12:16:36.346323696Z",
+                                                      "evaluationTime":  0.000131418,
+                                                      "lastEvaluation":  "2026-06-25T17:55:05.816943556Z",
                                                       "type":  "alerting"
                                                   }
                                               ],
                                     "interval":  15,
                                     "limit":  0,
-                                    "evaluationTime":  0.093093059,
-                                    "lastEvaluation":  "2026-06-25T12:16:36.253486688Z"
+                                    "evaluationTime":  0.00123287,
+                                    "lastEvaluation":  "2026-06-25T17:55:05.815845105Z"
                                 },
                                 {
                                     "name":  "llm-quality-and-safety",
@@ -132,8 +118,8 @@
 
                                                                  ],
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000489602,
-                                                      "lastEvaluation":  "2026-06-25T12:16:33.913155044Z",
+                                                      "evaluationTime":  0.000298928,
+                                                      "lastEvaluation":  "2026-06-25T17:55:18.472049451Z",
                                                       "type":  "alerting"
                                                   },
                                                   {
@@ -154,15 +140,15 @@
 
                                                                  ],
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.002248465,
-                                                      "lastEvaluation":  "2026-06-25T12:16:33.91366535Z",
+                                                      "evaluationTime":  0.000747769,
+                                                      "lastEvaluation":  "2026-06-25T17:55:18.472395783Z",
                                                       "type":  "alerting"
                                                   }
                                               ],
                                     "interval":  15,
                                     "limit":  0,
-                                    "evaluationTime":  0.002825684,
-                                    "lastEvaluation":  "2026-06-25T12:16:33.913093532Z"
+                                    "evaluationTime":  0.001134005,
+                                    "lastEvaluation":  "2026-06-25T17:55:18.472013948Z"
                                 },
                                 {
                                     "name":  "llm-availability-slo-alerts",
@@ -187,8 +173,8 @@
 
                                                                  ],
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000379477,
-                                                      "lastEvaluation":  "2026-06-25T12:16:39.320146863Z",
+                                                      "evaluationTime":  0.000309743,
+                                                      "lastEvaluation":  "2026-06-25T17:55:08.883283986Z",
                                                       "type":  "alerting"
                                                   },
                                                   {
@@ -210,15 +196,15 @@
 
                                                                  ],
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000189238,
-                                                      "lastEvaluation":  "2026-06-25T12:16:39.320539943Z",
+                                                      "evaluationTime":  0.000189226,
+                                                      "lastEvaluation":  "2026-06-25T17:55:08.883606731Z",
                                                       "type":  "alerting"
                                                   }
                                               ],
                                     "interval":  15,
                                     "limit":  0,
-                                    "evaluationTime":  0.000634528,
-                                    "lastEvaluation":  "2026-06-25T12:16:39.320098654Z"
+                                    "evaluationTime":  0.000551876,
+                                    "lastEvaluation":  "2026-06-25T17:55:08.883248081Z"
                                 },
                                 {
                                     "name":  "llm-availability-slo-recording",
@@ -228,79 +214,79 @@
                                                       "name":  "llm:sli_error:ratio_rate5m",
                                                       "query":  "sum(rate(llm_http_requests_total{route=\"/v1/generate\",status_code=~\"5..\"}[5m])) / clamp_min(sum(rate(llm_http_requests_total{route=\"/v1/generate\"}[5m])), 0.000000001)",
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.001269776,
-                                                      "lastEvaluation":  "2026-06-25T12:16:24.022415938Z",
+                                                      "evaluationTime":  0.000629377,
+                                                      "lastEvaluation":  "2026-06-25T17:54:53.582195729Z",
                                                       "type":  "recording"
                                                   },
                                                   {
                                                       "name":  "llm:sli_error:ratio_rate30m",
                                                       "query":  "sum(rate(llm_http_requests_total{route=\"/v1/generate\",status_code=~\"5..\"}[30m])) / clamp_min(sum(rate(llm_http_requests_total{route=\"/v1/generate\"}[30m])), 0.000000001)",
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000611333,
-                                                      "lastEvaluation":  "2026-06-25T12:16:24.023702817Z",
+                                                      "evaluationTime":  0.000601573,
+                                                      "lastEvaluation":  "2026-06-25T17:54:53.582839208Z",
                                                       "type":  "recording"
                                                   },
                                                   {
                                                       "name":  "llm:sli_error:ratio_rate1h",
                                                       "query":  "sum(rate(llm_http_requests_total{route=\"/v1/generate\",status_code=~\"5..\"}[1h])) / clamp_min(sum(rate(llm_http_requests_total{route=\"/v1/generate\"}[1h])), 0.000000001)",
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.002099956,
-                                                      "lastEvaluation":  "2026-06-25T12:16:24.024324252Z",
+                                                      "evaluationTime":  0.042916042,
+                                                      "lastEvaluation":  "2026-06-25T17:54:53.583455683Z",
                                                       "type":  "recording"
                                                   },
                                                   {
                                                       "name":  "llm:sli_error:ratio_rate6h",
                                                       "query":  "sum(rate(llm_http_requests_total{route=\"/v1/generate\",status_code=~\"5..\"}[6h])) / clamp_min(sum(rate(llm_http_requests_total{route=\"/v1/generate\"}[6h])), 0.000000001)",
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000541418,
-                                                      "lastEvaluation":  "2026-06-25T12:16:24.026442912Z",
+                                                      "evaluationTime":  0.000635478,
+                                                      "lastEvaluation":  "2026-06-25T17:54:53.626387427Z",
                                                       "type":  "recording"
                                                   },
                                                   {
                                                       "name":  "llm:slo_availability:ratio_rate30m",
                                                       "query":  "1 - llm:sli_error:ratio_rate30m",
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000129128,
-                                                      "lastEvaluation":  "2026-06-25T12:16:24.026995432Z",
+                                                      "evaluationTime":  0.000192324,
+                                                      "lastEvaluation":  "2026-06-25T17:54:53.627035706Z",
                                                       "type":  "recording"
                                                   },
                                                   {
                                                       "name":  "llm:slo_error_budget:burn_rate5m",
                                                       "query":  "llm:sli_error:ratio_rate5m / 0.01",
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000120226,
-                                                      "lastEvaluation":  "2026-06-25T12:16:24.027132662Z",
+                                                      "evaluationTime":  0.000093411,
+                                                      "lastEvaluation":  "2026-06-25T17:54:53.627236131Z",
                                                       "type":  "recording"
                                                   },
                                                   {
                                                       "name":  "llm:slo_error_budget:burn_rate30m",
                                                       "query":  "llm:sli_error:ratio_rate30m / 0.01",
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000098021,
-                                                      "lastEvaluation":  "2026-06-25T12:16:24.02726039Z",
+                                                      "evaluationTime":  0.000098212,
+                                                      "lastEvaluation":  "2026-06-25T17:54:53.627336543Z",
                                                       "type":  "recording"
                                                   },
                                                   {
                                                       "name":  "llm:slo_error_budget:burn_rate1h",
                                                       "query":  "llm:sli_error:ratio_rate1h / 0.01",
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000101623,
-                                                      "lastEvaluation":  "2026-06-25T12:16:24.027365812Z",
+                                                      "evaluationTime":  0.00008011,
+                                                      "lastEvaluation":  "2026-06-25T17:54:53.627441556Z",
                                                       "type":  "recording"
                                                   },
                                                   {
                                                       "name":  "llm:slo_error_budget:burn_rate6h",
                                                       "query":  "llm:sli_error:ratio_rate6h / 0.01",
                                                       "health":  "ok",
-                                                      "evaluationTime":  0.000099322,
-                                                      "lastEvaluation":  "2026-06-25T12:16:24.027474836Z",
+                                                      "evaluationTime":  0.000096112,
+                                                      "lastEvaluation":  "2026-06-25T17:54:53.627527166Z",
                                                       "type":  "recording"
                                                   }
                                               ],
                                     "interval":  30,
                                     "limit":  0,
-                                    "evaluationTime":  0.005367765,
-                                    "lastEvaluation":  "2026-06-25T12:16:24.022210193Z"
+                                    "evaluationTime":  0.045471754,
+                                    "lastEvaluation":  "2026-06-25T17:54:53.582154224Z"
                                 }
                             ]
              }

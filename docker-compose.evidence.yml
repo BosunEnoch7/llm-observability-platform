@@ -1,0 +1,13 @@
+services:
+  llm-service:
+    environment:
+      OTEL_ENABLED: "true"
+      OTEL_SERVICE_NAME: llm-observability-service
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_TRACE_SAMPLE_RATIO: "1.0"
+
+  grafana:
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_AUTH_ANONYMOUS_HIDE_VERSION: "true"

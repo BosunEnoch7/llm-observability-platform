@@ -9,13 +9,27 @@ Start the local platform:
 ```powershell
 Copy-Item .env.example .env -ErrorAction SilentlyContinue
 docker compose up --build -d
-.\scripts\smoke-test.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\smoke-test.ps1
 ```
 
 Collect machine-readable evidence:
 
 ```powershell
-.\scripts\collect-local-evidence.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\collect-local-evidence.ps1
+```
+
+For screenshot capture only, enable tracing and anonymous local Grafana Viewer
+access with the evidence override:
+
+```powershell
+docker compose -f docker-compose.yml -f docker-compose.evidence.yml up -d --no-build
+```
+
+This override is intentionally separate from the default Compose configuration.
+Restore the normal local security settings after capture:
+
+```powershell
+docker compose up -d --no-build --force-recreate llm-service grafana
 ```
 
 Open:
@@ -54,3 +68,10 @@ Save generated JSON/text evidence under `screenshots/evidence/`. See
 
 Do not include secrets, API keys, private prompts, subscription IDs, tenant IDs,
 or personal access tokens in screenshots.
+
+## Captured evidence status
+
+The repository contains the completed local evidence set captured on June 25,
+2026. The Azure resources screenshot remains intentionally absent because the
+real deployment was blocked during `what-if` by the subscription's consumed
+Container Apps environment quota.

@@ -39,6 +39,31 @@ variables, RBAC, quota, and cost approval.
 This status is documented honestly because production engineering should not
 claim cloud deployment or dashboard proof that has not been executed.
 
+## Runtime evidence gallery
+
+The images below were captured from the running Docker Compose platform on
+June 25, 2026. They remain useful portfolio evidence even when the local or
+Azure environments are offline.
+
+| Live Grafana telemetry | Prometheus target health |
+| --- | --- |
+| [![Grafana LLM overview](screenshots/06-grafana-overview.png)](screenshots/06-grafana-overview.png) | [![Prometheus targets](screenshots/04-prometheus-targets.png)](screenshots/04-prometheus-targets.png) |
+
+| Distributed traces | Controlled load test |
+| --- | --- |
+| [![Jaeger traces](screenshots/08-jaeger-trace.png)](screenshots/08-jaeger-trace.png) | [![Load-test results](screenshots/09-load-test.png)](screenshots/09-load-test.png) |
+
+Additional proof:
+
+- [FastAPI documentation](screenshots/01-api-docs.png)
+- [Readiness endpoint](screenshots/02-health-ready.png)
+- [Prometheus metrics](screenshots/03-metrics.png)
+- [Prometheus alert and SLO rules](screenshots/05-prometheus-rules.png)
+- [Alertmanager status](screenshots/07-alertmanager.png)
+- [Successful GitHub Actions pipeline](screenshots/10-github-actions-ci.png)
+- [Azure deployment workflow readiness](screenshots/11-azure-deploy-workflow.png)
+- [Machine-readable evidence](screenshots/evidence/)
+
 ## What this project demonstrates
 
 - AI observability for LLM workloads
@@ -348,6 +373,5 @@ Project implementation: complete.
 
 Remaining external execution:
 
-- optional polished dashboard screenshots for the portfolio gallery;
 - real Azure deployment when subscription access, RBAC, quota, OIDC variables,
   and cost approval are ready.

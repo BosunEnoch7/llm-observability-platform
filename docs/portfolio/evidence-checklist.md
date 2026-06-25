@@ -5,20 +5,21 @@ evidence.
 
 ## Required screenshots
 
-- `screenshots/01-api-docs.png` - FastAPI Swagger UI at `/docs`.
-- `screenshots/02-health-ready.png` - `/health/ready` returning ready status.
-- `screenshots/03-metrics.png` - `/metrics` showing LLM metrics.
-- `screenshots/04-prometheus-targets.png` - Prometheus target for the LLM
+- [x] `screenshots/01-api-docs.png` - FastAPI Swagger UI at `/docs`.
+- [x] `screenshots/02-health-ready.png` - `/health/ready` returning ready status.
+- [x] `screenshots/03-metrics.png` - `/metrics` showing LLM metrics.
+- [x] `screenshots/04-prometheus-targets.png` - Prometheus target for the LLM
   service in the `UP` state.
-- `screenshots/05-prometheus-rules.png` - loaded alert rules.
-- `screenshots/06-grafana-overview.png` - LLM overview dashboard.
-- `screenshots/07-alertmanager.png` - Alertmanager route/status page.
-- `screenshots/08-jaeger-trace.png` - request trace with provider span.
-- `screenshots/09-load-test.png` - load/failure test output.
-- `screenshots/10-github-actions-ci.png` - successful CI workflow.
-- `screenshots/11-azure-deploy-workflow.png` - Azure deploy workflow inputs.
-- `screenshots/12-azure-resources.png` - Azure resources after authorized
-  deployment, when available.
+- [x] `screenshots/05-prometheus-rules.png` - loaded alert and SLO rules.
+- [x] `screenshots/06-grafana-overview.png` - live LLM overview dashboard.
+- [x] `screenshots/07-alertmanager.png` - Alertmanager ready status.
+- [x] `screenshots/08-jaeger-trace.png` - LLM service traces.
+- [x] `screenshots/09-load-test.png` - controlled load-test output.
+- [x] `screenshots/10-github-actions-ci.png` - successful CI workflow.
+- [x] `screenshots/11-azure-deploy-workflow.png` - Azure deploy workflow.
+- [ ] `screenshots/12-azure-resources.png` - intentionally absent until an
+  authorized deployment succeeds. The current subscription quota blocker is
+  documented rather than disguised.
 
 ## Machine-readable evidence
 
@@ -27,6 +28,8 @@ evidence.
 - `screenshots/evidence/metrics.txt` - API metrics proof.
 - `screenshots/evidence/prometheus-targets.json` - scrape target proof.
 - `screenshots/evidence/prometheus-rules.json` - alert rule proof.
+- `screenshots/evidence/load-test.txt` - first controlled load-test output.
+- `screenshots/evidence/load-test-live.txt` - load used for live dashboard proof.
 
 ## Evidence narrative
 

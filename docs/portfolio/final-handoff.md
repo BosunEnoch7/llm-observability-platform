@@ -11,7 +11,7 @@ Current honest status:
 - API-only runtime evidence: collected.
 - Full Docker Compose runtime evidence: collected.
 - Grafana, Prometheus, Alertmanager, Jaeger, and the API: running and verified.
-- Visual dashboard screenshots: optional portfolio-polish step.
+- Visual dashboard, tracing, alerting, load-test, and CI screenshots: collected.
 - Azure authentication and preflight: completed.
 - Azure foundation what-if: blocked by the subscription's consumed Container
   Apps environment quota.
@@ -57,6 +57,7 @@ Last full validation completed successfully:
 - Full local evidence collected from the containerized stack.
 - Grafana database health reported `ok`.
 - Prometheus reported two active targets and four rule groups.
+- Recruiter-facing runtime evidence gallery added to the README.
 
 ## Demo path without Azure
 
